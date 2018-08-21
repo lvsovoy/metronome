@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import android.widget.EditText
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.app_toolbar))
-
+        val bmp1 = findViewById<EditText>(R.id.bpm)
     }
+    button.setOnClickListener( new View.oClickListener()){
+        public void onClick(Viev v){
+            int bmp = Integer.parseInt(bmptext.getText().toString().trim());
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
