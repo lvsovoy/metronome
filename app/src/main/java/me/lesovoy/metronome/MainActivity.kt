@@ -69,14 +69,14 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
                     isPlaying = true
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    var effect: VibrationEffect = VibrationEffect.createOneShot(1, VibrationEffect.DEFAULT_AMPLITUDE);
+                    var effect: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE);
 
 
                     launch {
                         while (isPlaying) {
                             var i = bpm.editableText.toString().toInt()
                             vibrator.vibrate(effect)
-                            delay((6000L / i - 1L), TimeUnit.MILLISECONDS)
+                            delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
                         }
                     }
 

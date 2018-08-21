@@ -11,7 +11,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
 
-        setSupportActionBar(findViewById(R.id.app_toolbar))
+        setSupportActionBar(findViewById(R.id.settings_toolbar))
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
 
         if (fragmentManager.findFragmentById(android.R.id.content) == null) {
