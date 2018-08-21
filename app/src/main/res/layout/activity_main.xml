@@ -12,17 +12,11 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-<<<<<<< HEAD
-        android:fontFamily="@font/productsans_regular"
-
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <EditText
         android:id="@+id/bpm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="215dp"
+        android:layout_height="198dp"
         android:ems="10"
         android:fontFamily="@font/productsans_bold"
         android:inputType="number"
@@ -30,62 +24,56 @@
         android:text="120"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/minus"
+        app:layout_constraintEnd_toStartOf="@+id/plus"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
+        app:layout_constraintStart_toEndOf="@+id/minus"
+        app:layout_constraintTop_toTopOf="@+id/minus" />
 
     <Button
         android:id="@+id/minus"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/productsans_bold"
         android:text="-"
         android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/plus"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/bpm"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+        tools:layout_editor_absoluteY="143dp" />
 
     <Button
         android:id="@+id/plus"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/productsans_bold"
         android:text="+"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bpm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minus"
-        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+        app:layout_constraintStart_toEndOf="@+id/bpm"
+        app:layout_constraintTop_toTopOf="@+id/bpm" />
 
     <Button
         android:id="@+id/playpause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/productsans_bold"
         android:text="Play/Pause"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minus" />
+        app:layout_constraintTop_toBottomOf="@+id/bpm" /><![CDATA[
 =======
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/productsans_regular"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> origin/master
+    >>>>>>> origin/master
 
+]]>
 </android.support.constraint.ConstraintLayout>
