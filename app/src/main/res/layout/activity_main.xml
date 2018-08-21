@@ -10,8 +10,21 @@
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp" />
+        android:background="?android:attr/colorBackground"
+        android:elevation="0dp">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/productsans_regular"
+            android:text="Metronome"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            tools:layout_editor_absoluteX="167dp"
+            tools:layout_editor_absoluteY="18dp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <EditText
         android:id="@+id/bpm"

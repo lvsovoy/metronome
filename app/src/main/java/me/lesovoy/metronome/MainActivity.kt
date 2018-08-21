@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.ToggleButton
-import kotlinx.android.synthetic.main.activity_main.*
 
 class Preset {
 //    bpm :Int
@@ -76,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         val bpm = findViewById<EditText>(R.id.bpm)
 
         //titlebar
-//      getSupportActionBar.title = "TEST"
-
+//      val titlebar = findViewById<Toolbar>(R.id.app_toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
         //plu/minus buttons
         val plus = findViewById<Button>(R.id.plus)
-        plus.setOnClickListener{
+        plus.setOnClickListener {
             var i = bpm.editableText.toString().toInt() + 1
             bpm.setText(i.toString())
         }
