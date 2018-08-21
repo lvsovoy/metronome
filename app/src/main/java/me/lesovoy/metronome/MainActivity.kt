@@ -90,12 +90,26 @@ class MainActivity : AppCompatActivity() {
         }
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
+        plus.setOnLongClickListener {
+            Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
+            var i = bpm.editableText.toString().toInt() + 10
+            bpm.setText(i.toString())
+            true
+        }
         plus.setOnClickListener {
             var i = bpm.editableText.toString().toInt() + 1
             bpm.setText(i.toString())
         }
 
+
+
         val minus = findViewById<Button>(R.id.minus)
+        minus.setOnLongClickListener {
+            Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
+            var i = bpm.editableText.toString().toInt() - 10
+            bpm.setText(i.toString())
+            true
+        }
         minus.setOnClickListener {
             var i = bpm.editableText.toString().toInt() - 1
             bpm.setText(i.toString())
