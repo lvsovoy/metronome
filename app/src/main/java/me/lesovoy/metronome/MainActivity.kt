@@ -1,6 +1,9 @@
 package me.lesovoy.metronome
 
+import android.content.Context
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.ToggleButton
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 
 class Preset {
 //    bpm :Int
@@ -23,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     // 0 - Tick 1 - Tock
     private var totalSteps = beatpattern.size //TODO: -1?
     private var currentStep = 1;
+    var isPlaying = false
 
     public fun setCurrentStep(i: Int) {
         currentStep = i
@@ -38,33 +44,6 @@ class MainActivity : AppCompatActivity() {
 
     public fun getTotalSteps(): Int {
         return totalSteps
-    }
-
-
-    fun tick(beatpattern: List<Int>, totalSteps: Int, currentStep: Int) {
-
-        // Check settings vibration/ display
-
-        //Trigger sound and delay
-        when (beatpattern[currentStep]) {
-            0 -> {
-                //Tick code
-                Toast.makeText(this, "Tick", Toast.LENGTH_SHORT).show()
-
-            }
-            1 -> {
-                //Tock code
-                Toast.makeText(this, "Tock", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-
-        //List rotation logic
-        if (currentStep == totalSteps) {
-            setCurrentStep(0)
-        } else {
-            setCurrentStep(getCurrentStep() + 1)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,13 +64,28 @@ class MainActivity : AppCompatActivity() {
                 //TODO proper listener
                 if (isChecked) {
                     Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
+                    isPlaying = true
+                    val vibrator : Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    var effect: VibrationEffect = VibrationEffect.createOneShot(1, VibrationEffect.DEFAULT_AMPLITUDE);
+
+
+                    launch {
+                        while (isPlaying) {
+                            var i = bpm.editableText.toString().toInt()
+                            vibrator.vibrate(effect)
+                            delay(1000*(60/i))
+                        }
+                    }
+
+
                 } else {
                     Toast.makeText(this, "not checked", Toast.LENGTH_SHORT).show()
+                    isPlaying = false
                 }
 //            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
         }
-        //plu/minus buttons
+        //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
         plus.setOnClickListener {
             var i = bpm.editableText.toString().toInt() + 1
@@ -126,14 +120,52 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun ticker() {
-        var play = false;
+    fun tick(beatpattern: List<Int>, totalSteps: Int, currentStep: Int) {
 
+        // Check settings vibration/ display
 
+        //Trigger sound and delay
+        when (beatpattern[currentStep]) {
+            0 -> {
+                //Tick code
+                Toast.makeText(this, "Tick", Toast.LENGTH_SHORT).show()
 
-        while (play) {
-            tick(beatpattern, totalSteps, currentStep)
+            }
+            1 -> {
+                //Tock code
+                Toast.makeText(this, "Tock", Toast.LENGTH_SHORT).show()
+
+            }
         }
+
+        //List rotation logic
+        if (currentStep == totalSteps) {
+            setCurrentStep(0)
+        } else {
+            setCurrentStep(getCurrentStep() + 1)
+        }
+    }
+
+    fun ticker() {
+        when (isPlaying) {
+            true -> {
+                Toast.makeText(this@MainActivity, "ticker true", Toast.LENGTH_SHORT).show()
+
+//                launch {
+//                    while (isPlaying) {
+//                        tick(beatpattern, totalSteps, currentStep)
+//                        Toast.makeText(this@MainActivity, "Coroutine on", Toast.LENGTH_SHORT).show()
+//                        delay(5000)
+//                    }
+//                }
+            }
+            false -> {
+                Toast.makeText(this@MainActivity, "ticker false", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
 
     }
 }
+
