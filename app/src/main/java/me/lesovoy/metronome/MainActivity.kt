@@ -1,6 +1,7 @@
 package me.lesovoy.metronome
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -13,6 +14,8 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import java.util.concurrent.TimeUnit
+
 
 class Preset {
 //    bpm :Int
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 if (isChecked) {
                     Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
                     isPlaying = true
-                    val vibrator : Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     var effect: VibrationEffect = VibrationEffect.createOneShot(1, VibrationEffect.DEFAULT_AMPLITUDE);
 
 
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                         while (isPlaying) {
                             var i = bpm.editableText.toString().toInt()
                             vibrator.vibrate(effect)
-                            delay(1000*(60/i))
+                            delay((6000L / i - 1L), TimeUnit.MILLISECONDS)
                         }
                     }
 
@@ -105,11 +108,16 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    fun launchSettingsActivity() {
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.settings -> {
 //            Launch settings activity
-                Toast.makeText(this, "Settigns", Toast.LENGTH_SHORT).show()
+                val settingsIntent = Intent(this, SettingsActivity::class.java)
+                startActivity(settingsIntent)
             }
             R.id.about -> {
 //            Launch about activity

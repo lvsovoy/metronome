@@ -9,6 +9,10 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.settings_activity)
+
+        setSupportActionBar(findViewById(R.id.app_toolbar))
+
 
         if (fragmentManager.findFragmentById(android.R.id.content) == null) {
             fragmentManager.beginTransaction()
