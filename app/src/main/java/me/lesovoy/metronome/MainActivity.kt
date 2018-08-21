@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.ToggleButton
+import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
@@ -27,7 +28,7 @@ class Preset {
 class MainActivity : AppCompatActivity() {
 
     //    var preset: Preset
-    private var beatpattern = listOf(0, 1, 1, 1);
+    var beatpattern = listOf(0, 1, 1, 1)
     // 0 - Tick 1 - Tock
     private var totalSteps = beatpattern.size //TODO: -1?
     private var currentStep = 1;
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     public fun getTotalSteps(): Int {
         return totalSteps
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,15 +77,21 @@ class MainActivity : AppCompatActivity() {
                     launch {
                         while (isPlaying) {
                             var i = bpm.editableText.toString().toInt()
-                            vibrator.vibrate(effect)
-                            delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+                            if (i != 0) {
+                                vibrator.vibrate(effect)
+//                                tick(beatpattern,getTotalSteps(),getCurrentStep())
+                                delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+                            }
                         }
+                        kotlin.coroutines.experimental.coroutineContext.cancel()
                     }
 
 
                 } else {
                     Toast.makeText(this, "not checked", Toast.LENGTH_SHORT).show()
                     isPlaying = false
+
+
                 }
 //            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
@@ -100,7 +108,6 @@ class MainActivity : AppCompatActivity() {
             var i = bpm.editableText.toString().toInt() + 1
             bpm.setText(i.toString())
         }
-
 
 
         val minus = findViewById<Button>(R.id.minus)
@@ -147,7 +154,7 @@ class MainActivity : AppCompatActivity() {
         // Check settings vibration/ display
 
         //Trigger sound and delay
-        when (beatpattern[currentStep]) {
+        when (beatpattern.elementAt(currentStep)) {
             0 -> {
                 //Tick code
                 Toast.makeText(this, "Tick", Toast.LENGTH_SHORT).show()
@@ -168,26 +175,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun ticker() {
-        when (isPlaying) {
-            true -> {
-                Toast.makeText(this@MainActivity, "ticker true", Toast.LENGTH_SHORT).show()
 
-//                launch {
-//                    while (isPlaying) {
-//                        tick(beatpattern, totalSteps, currentStep)
-//                        Toast.makeText(this@MainActivity, "Coroutine on", Toast.LENGTH_SHORT).show()
-//                        delay(5000)
-//                    }
-//                }
-            }
-            false -> {
-                Toast.makeText(this@MainActivity, "ticker false", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-
-
-    }
 }
 
