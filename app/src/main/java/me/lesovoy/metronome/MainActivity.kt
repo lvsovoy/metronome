@@ -147,19 +147,14 @@ class MainActivity : AppCompatActivity() {
 
         val minus = findViewById<Button>(R.id.minus)
         minus.setOnLongClickListener {
-            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString()) {
+            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
                 Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
                 val i = bpm.editableText.toString().toInt() - 10
                 bpm.setText(i.toString())
                 true
             } else {
                 Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
-                //                    var i = bpm.editableText.toString().toInt() - 5
-//                    bpm.setText(i.toString())
                 true
-//            Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
-//            var i = bpm.editableText.toString().toInt() - 20
-//            bpm.setText(i.toString())
             }
         }
         minus.setOnClickListener {
