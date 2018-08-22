@@ -142,8 +142,8 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.about -> {
 //            Launch about activity
-                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show()
-
+                val aboutIntent = Intent(this, AboutActivity::class.java)
+                startActivity(aboutIntent)
             }
         }
         return super.onOptionsItemSelected(item)
