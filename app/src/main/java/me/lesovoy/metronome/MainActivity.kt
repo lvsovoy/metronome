@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             var i = bpm.editableText.toString().toInt() + 10
             bpm.setText(i.toString())
             true
+
         } else {
                 Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
                 bpm.setText(10.toString())
