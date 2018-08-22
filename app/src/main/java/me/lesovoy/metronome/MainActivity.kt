@@ -2,6 +2,7 @@ package me.lesovoy.metronome
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                         while (isPlaying) {
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
-                                if (i != 0) {
+                                if (i != 0 && i < 500 && i > 0) {
                                     when (beatpattern.elementAt(currentStep).toInt()) {
                                         0 -> {
                                             //Tick code
@@ -102,6 +103,8 @@ class MainActivity : AppCompatActivity() {
                                     }
 
                                     delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+                                } else {
+//                                    Toast.makeText(content, "Illegal bpm", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
@@ -118,10 +121,8 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
         }
-
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
-
         plus.setOnLongClickListener {
             if (bpm.editableText.toString() >= 0.toString()) {
             Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
@@ -170,12 +171,11 @@ true
                     Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
                 }
 
-            }
 
-                val testb = findViewById<Button>(R.id.testb)
-        testb.setOnClickListener {
-            testt.text = "current " + getCurrentStep() + " total " + getTotalSteps() + " List " + beatpattern.toString()
-        }
+//        val testb = findViewById<Button>(R.id.testb)
+//        testb.setOnClickListener {
+//            testt.text = "current " + getCurrentStep() + " total " + getTotalSteps() + " List " + beatpattern.toString()
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -203,6 +203,7 @@ true
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 
 }

@@ -25,19 +25,19 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-        if (fragmentManager.findFragmentById(android.R.id.content) == null) {
-            fragmentManager.beginTransaction()
-                    .add(android.R.id.content, SettingsFragment()).commit()
-//            val frag = fragmentManager.findFragmentById(android.R.id.content)
-        }
+//        if (fragmentManager.findFragmentById(android.R.id.content) == null) {
+//            fragmentManager.beginTransaction()
+//                    .add(android.R.id.content, SettingsFragment()).commit()
+////            val frag = fragmentManager.findFragmentById(android.R.id.content)
+//        }
     }
 
 
-    class SettingsFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.preferences)
-        }
-    }
+//    class SettingsFragment : PreferenceFragment() {
+//        override fun onCreate(savedInstanceState: Bundle?) {
+//            super.onCreate(savedInstanceState)
+//            addPreferencesFromResource(R.xml.preferences)
+//        }
+//    }
 }
 
