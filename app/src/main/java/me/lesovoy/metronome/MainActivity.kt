@@ -28,11 +28,30 @@ class Preset {
 class MainActivity : AppCompatActivity() {
 
     //    var preset: Preset
-    var beatpattern = listOf(0, 1, 1, 1)
+    private var beatpattern = listOf(0, 1, 1, 1)
     // 0 - Tick 1 - Tock
     private var totalSteps = beatpattern.size //TODO: -1?
     private var currentStep = 1;
     var isPlaying = false
+//    public fun setList(a: Int, b: Int, c: Int, d: Int){
+//        beatpattern= listOf(a,b,c,d)
+//    }
+//    public fun setBeatpattern(a: Int, b: Int, c: Int, d: Int){
+//        beatpattern = listOf(
+//                a,
+//                b,
+//                c,
+//                d
+//        )
+//    }
+    public fun setList(a: Int, b: Int, c: Int, d: Int){
+    listOf(a,b,c,d)
+}
+
+    public fun getBeatpattern(): List<Int> {
+        return beatpattern
+    }
+
 
     public fun setCurrentStep(i: Int) {
         currentStep = i
@@ -71,16 +90,29 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
                     isPlaying = true
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    var effect: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE);
+                    var effect: VibrationEffect = VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE);
 
 
                     launch {
                         while (isPlaying) {
                             var i = bpm.editableText.toString().toInt()
                             if (i != 0) {
+                                val iterate = beatpattern.listIterator()
+//                                do{
                                 vibrator.vibrate(effect)
-//                                tick(beatpattern,getTotalSteps(),getCurrentStep())
+                                //while (iterate.hasNext()){
+//                                    val currentStep = iterate.next()
+//                                    if (currentStep == 0)
+//                                        vibrator.vibrate(effect)
+//                                    else
+//                                        vibrator.vibrate(effect)
+//                                        Toast.makeText(this@run, "1", Toast.LENGTH_SHORT).show()
+
+//
+//                                tick(getBeatpattern().,getTotalSteps(),getCurrentStep()){
+//                                }
                                 delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+//                                } while (iterate.hasNext())
                             }
                         }
                         kotlin.coroutines.experimental.coroutineContext.cancel()
@@ -104,10 +136,11 @@ class MainActivity : AppCompatActivity() {
             bpm.setText(i.toString())
             true
         }
+
         plus.setOnClickListener {
             var i = bpm.editableText.toString().toInt() + 1
             bpm.setText(i.toString())
-        }
+            }
 
 
         val minus = findViewById<Button>(R.id.minus)
@@ -149,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun tick(beatpattern: List<Int>, totalSteps: Int, currentStep: Int) {
+    fun tick(beatpattern: List<Int>, totalSteps: Int, currentStep: Int, function: () -> Unit) {
 
         // Check settings vibration/ display
 
