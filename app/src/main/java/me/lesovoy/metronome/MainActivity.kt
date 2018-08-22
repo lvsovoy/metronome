@@ -76,11 +76,13 @@ class MainActivity : AppCompatActivity() {
 
                     launch {
                         while (isPlaying) {
-                            var i = bpm.editableText.toString().toInt()
-                            if (i != 0) {
-                                vibrator.vibrate(effect)
+                            if (bpm.editableText.toString() != "") {
+                                var i = bpm.editableText.toString().toInt()
+                                if (i != 0) {
+                                    vibrator.vibrate(effect)
 //                                tick(beatpattern,getTotalSteps(),getCurrentStep())
-                                delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+                                    delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
+                                }
                             }
                         }
                         kotlin.coroutines.experimental.coroutineContext.cancel()
