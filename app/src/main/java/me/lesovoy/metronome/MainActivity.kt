@@ -2,6 +2,7 @@ package me.lesovoy.metronome
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.ToggleButton
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -30,9 +32,10 @@ class MainActivity : AppCompatActivity() {
     //    var preset: Preset
     var beatpattern = listOf(0, 1, 1, 1)
     // 0 - Tick 1 - Tock
-    private var totalSteps = beatpattern.size //TODO: -1?
-    private var currentStep = 1;
+    private var totalSteps = beatpattern.size - 1 //TODO: -1?
+    private var currentStep = 0;
     var isPlaying = false
+
 
     public fun setCurrentStep(i: Int) {
         currentStep = i
@@ -70,17 +73,35 @@ class MainActivity : AppCompatActivity() {
                 if (isChecked) {
                     Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
                     isPlaying = true
-                    val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    var effect: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE);
 
+                    val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    var weakVibration: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE);
+                    var strongVibration: VibrationEffect = VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE);
+//                    val mp :MediaPlayer =
 
                     launch {
+
                         while (isPlaying) {
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
                                 if (i != 0) {
-                                    vibrator.vibrate(effect)
-//                                tick(beatpattern,getTotalSteps(),getCurrentStep())
+                                    when (beatpattern.elementAt(currentStep).toInt()) {
+                                        0 -> {
+                                            //Tick code
+                                            vibrator.vibrate(strongVibration)
+                                        }
+                                        1 -> {
+                                            //Tock code
+                                            vibrator.vibrate(weakVibration)
+                                        }
+                                    }
+                                    //List rotation logic
+                                    if (currentStep >= totalSteps) {
+                                        setCurrentStep(0)
+                                    } else {
+                                        setCurrentStep(getCurrentStep() + 1)
+                                    }
+
                                     delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
                                 }
                             }
@@ -123,6 +144,12 @@ class MainActivity : AppCompatActivity() {
             var i = bpm.editableText.toString().toInt() - 1
             bpm.setText(i.toString())
         }
+
+
+        val testb = findViewById<Button>(R.id.testb)
+        testb.setOnClickListener {
+            testt.text = "current " + getCurrentStep() + " total " + getTotalSteps() + " List " + beatpattern.toString()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -151,31 +178,6 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun tick(beatpattern: List<Int>, totalSteps: Int, currentStep: Int) {
-
-        // Check settings vibration/ display
-
-        //Trigger sound and delay
-        when (beatpattern.elementAt(currentStep)) {
-            0 -> {
-                //Tick code
-                Toast.makeText(this, "Tick", Toast.LENGTH_SHORT).show()
-
-            }
-            1 -> {
-                //Tock code
-                Toast.makeText(this, "Tock", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-
-        //List rotation logic
-        if (currentStep == totalSteps) {
-            setCurrentStep(0)
-        } else {
-            setCurrentStep(getCurrentStep() + 1)
-        }
-    }
 
 
 }
