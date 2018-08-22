@@ -2,7 +2,6 @@ package me.lesovoy.metronome
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -119,34 +118,60 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
         }
+
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
+
         plus.setOnLongClickListener {
+            if (bpm.editableText.toString() >= 0.toString()) {
             Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
             var i = bpm.editableText.toString().toInt() + 10
             bpm.setText(i.toString())
             true
-        }
+        } else {
+                Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
+                bpm.setText(10.toString())
+                true
+            }}
+
         plus.setOnClickListener {
-            var i = bpm.editableText.toString().toInt() + 1
-            bpm.setText(i.toString())
+            if (bpm.editableText.toString() >= 0.toString()) {
+                var i = bpm.editableText.toString().toInt() + 1
+                bpm.setText(i.toString())
+            } else {
+                bpm.setText(1.toString())
+            }
         }
 
 
         val minus = findViewById<Button>(R.id.minus)
-        minus.setOnLongClickListener {
-            Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
-            var i = bpm.editableText.toString().toInt() - 10
-            bpm.setText(i.toString())
-            true
-        }
-        minus.setOnClickListener {
-            var i = bpm.editableText.toString().toInt() - 1
-            bpm.setText(i.toString())
-        }
+            minus.setOnLongClickListener {
+                if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString()) {
+                    Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
+                    val i = bpm.editableText.toString().toInt() - 10
+                    bpm.setText(i.toString())
+                    true
+                }else{
+                    Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
+                //                    var i = bpm.editableText.toString().toInt() - 5
+//                    bpm.setText(i.toString())
+true
+//            Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
+//            var i = bpm.editableText.toString().toInt() - 20
+//            bpm.setText(i.toString())
+            }
+               }
+            minus.setOnClickListener {
+                if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 0.toString()) {
+                    var i = bpm.editableText.toString().toInt() - 1
+                    bpm.setText(i.toString())
+                } else {
+                    Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
+                }
 
+            }
 
-        val testb = findViewById<Button>(R.id.testb)
+                val testb = findViewById<Button>(R.id.testb)
         testb.setOnClickListener {
             testt.text = "current " + getCurrentStep() + " total " + getTotalSteps() + " List " + beatpattern.toString()
         }
@@ -177,7 +202,6 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
 }

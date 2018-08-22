@@ -20,14 +20,12 @@ class Strokes() {
         tmp.add(count)
         tmp.addAll(pattern)
         strokes.add(tmp)
-        println("strokes:" + strokes)
+        //println("strokes:" + strokes)
     }
 
 
     fun getBeat(): Int {
         //println("before: currentStroke:" + currentStroke + " currentLoop:" + currentLoop + " currentBeat:" + currentBeat)
-        if (currentStroke == strokes.size - 1)
-            currentStroke = 0
         var beatPattern = strokes.get(currentStroke)
         loops = beatPattern.get(0)
         var beat = beatPattern.get(currentBeat)
@@ -35,15 +33,17 @@ class Strokes() {
         if (currentBeat == beatPattern.size) {
             currentBeat = 1
             currentLoop++
-            if (currentLoop == (loops - 1)) {
-                currentLoop = 0
-                currentStroke++
-                if (currentStroke == strokes.size - 1)
-                    currentStroke = 0
-            }
         }
+        if (currentLoop == loops) {
+            currentLoop = 0
+            currentStroke++
+            if (currentStroke == strokes.size)
+                currentStroke = 0
+        }
+
         //println("after: currentStroke:" + currentStroke + " currentLoop:" + currentLoop + " currentBeat:" + currentBeat)
         return beat
     }
+
 
 }

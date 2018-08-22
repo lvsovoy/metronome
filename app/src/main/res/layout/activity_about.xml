@@ -79,7 +79,7 @@
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/productsans_medium"
-        android:text="Anastasija Kafanova"
+        android:text="Anastasija Marija Kafanova"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
