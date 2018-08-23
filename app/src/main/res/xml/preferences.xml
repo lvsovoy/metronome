@@ -10,7 +10,8 @@
         android:defaultValue="false"
         android:key="vibration_feedback"
         android:title="Enable vibration feedback" />
-
+    <!--<SpectrumPreference-->
+    <!--android:title = "test"/>-->
 
 
 </PreferenceScreen>

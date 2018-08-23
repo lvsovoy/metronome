@@ -15,8 +15,14 @@ import android.view.View
 import android.view.ViewGroup
 import java.text.AttributedCharacterIterator
 import android.content.SharedPreferences.Editor
+import android.graphics.Color
+import android.util.Log
 import android.widget.*
 import kotlinx.android.synthetic.main.settings_activity.*
+import uz.shift.colorpicker.OnColorChangedListener
+import uz.shift.colorpicker.LineColorPicker
+
+
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -91,7 +97,15 @@ class SettingsActivity : AppCompatActivity() {
 
         })
 
+        val colorPicker = findViewById<View>(R.id.picker) as LineColorPicker
 
+        colorPicker.colors = intArrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+
+        colorPicker.setSelectedColor(Color.RED)
+
+        colorPicker.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c)) })
+
+        val color = colorPicker.color
 
     }
 
