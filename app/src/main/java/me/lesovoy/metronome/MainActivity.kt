@@ -1,17 +1,22 @@
 package me.lesovoy.metronome
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.ToggleButton
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -25,6 +30,7 @@ class Preset {
 
 }
 
+@Suppress("NAME_SHADOWING")
 class MainActivity : AppCompatActivity() {
 
     //    var preset: Preset
@@ -33,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private var totalSteps = beatpattern.size - 1 //TODO: -1?
     private var currentStep = 0;
     var isPlaying = false
+
+    var prevPress = 0L
 
 
     public fun setCurrentStep(i: Int) {
@@ -52,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -147,10 +156,10 @@ class MainActivity : AppCompatActivity() {
 
         val minus = findViewById<Button>(R.id.minus)
         var i = bpm.editableText.toString()
-                minus.setOnLongClickListener {
-//            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
+        minus.setOnLongClickListener {
+            //            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
 
-            if (bpm.editableText.toString() != "" && i < 10.toString()){
+            if (bpm.editableText.toString() != "" && i < 10.toString()) {
                 Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
                 val i = bpm.editableText.toString().toInt() - 10
                 bpm.setText(i.toString())
@@ -169,11 +178,33 @@ class MainActivity : AppCompatActivity() {
             }
 
 
-//        val testb = findViewById<Button>(R.id.testb)
-//        testb.setOnClickListener {
-//            testt.text = "current " + getCurrentStep() + " total " + getTotalSteps() + " List " + beatpattern.toString()
-//        }
         }
+
+        val timebutton = findViewById<Button>(R.id.time_button)
+
+        timebutton.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+                when (event?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+//                        startTime = System.currentTimeMillis()
+                        Log.d("OnTouchListener", "ACTION_DOWN")
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        val currPress = System.currentTimeMillis()
+                        timeText.text = (60000 / (currPress - prevPress)).toString()
+//                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
+                        prevPress = currPress
+
+                    }
+                }
+
+
+                return v?.onTouchEvent(event) ?: true
+            }
+        })
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
