@@ -97,7 +97,7 @@ class SettingsActivity : AppCompatActivity() {
 
         })
 
-        val colorArray = intArrayOf(Color.WHITE, Color.GREEN, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN, Color.MAGENTA, Color.TRANSPARENT, Color.LTGRAY, Color.GRAY, Color.BLACK)
+        val colorArray = intArrayOf(Color.GREEN, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN, Color.MAGENTA, Color.LTGRAY, Color.GRAY)
 
         val colorPicker = findViewById<View>(R.id.mainPicker) as LineColorPicker
 
