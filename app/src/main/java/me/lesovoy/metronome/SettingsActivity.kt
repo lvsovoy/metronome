@@ -97,15 +97,28 @@ class SettingsActivity : AppCompatActivity() {
 
         })
 
-        val colorPicker = findViewById<View>(R.id.picker) as LineColorPicker
+        val colorArray = intArrayOf(Color.WHITE, Color.GREEN, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN, Color.MAGENTA, Color.TRANSPARENT, Color.LTGRAY, Color.GRAY, Color.BLACK)
 
-        colorPicker.colors = intArrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+        val colorPicker = findViewById<View>(R.id.mainPicker) as LineColorPicker
+
+        colorPicker.colors = colorArray
 
         colorPicker.setSelectedColor(Color.RED)
 
         colorPicker.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c)) })
 
         val color = colorPicker.color
+
+
+        val colorPicker1 = findViewById<View>(R.id.offPicker) as LineColorPicker
+
+        colorPicker1.colors = colorArray
+
+        colorPicker1.setSelectedColor(Color.RED)
+
+        colorPicker1.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c)) })
+
+        val color1 = colorPicker.color
 
     }
 
