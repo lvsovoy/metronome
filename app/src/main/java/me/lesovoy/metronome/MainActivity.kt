@@ -3,6 +3,7 @@ package me.lesovoy.metronome
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -12,10 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
@@ -200,6 +198,51 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
+
+        var lparams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lparams.setMargins(16, 0, 0, 0)
+//        lparams.height = 32
+//        lparams.width = 32
+
+        for (i in beatpattern.indices) {
+
+            when (beatpattern.elementAt(i)) {
+                0 -> {
+                    val btn = Button(this)
+                    btn.id = i
+                    btn.text = i.toString()
+                    btn.setBackgroundColor(Color.RED)
+                    btn.layoutParams = lparams
+                    val index = i
+                    btn.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(v: View) {
+                            Log.d("TAG", "The index is$index , TICK")
+                            btn.setBackgroundColor(Color.BLUE)
+//                             beatpattern.elementAt(i)= 1
+                        }
+                    })
+                    bpContainer.addView(btn)
+                }
+                1 -> {
+                    val btn = Button(this)
+                    btn.id = i
+                    btn.text = i.toString()
+                    btn.setBackgroundColor(Color.BLUE)
+                    btn.layoutParams = lparams
+                    val index = i
+                    btn.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(v: View) {
+                            Log.d("TAG", "The index is$index , TOCK")
+                            btn.setBackgroundColor(Color.RED)
+//                            beatpattern.elementAt(i)= 0
+                        }
+                    })
+                    bpContainer.addView(btn)
+                }
+            }
+
+        }
 
     }
 
