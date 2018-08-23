@@ -19,6 +19,10 @@ import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
+//import com.sun.org.apache.xerces.internal.util.DOMUtil.getParent
+import android.view.ViewManager
+
+
 
 
 class Preset {
@@ -30,7 +34,7 @@ class Preset {
 class MainActivity : AppCompatActivity() {
 
     //    var preset: Preset
-    var beatpattern = listOf(0, 1, 1, 1)
+    var beatpattern = mutableListOf(0, 1, 1, 1)
     // 0 - Tick 1 - Tock
     private var totalSteps = beatpattern.size - 1
     private var currentStep = 0
@@ -186,12 +190,14 @@ class MainActivity : AppCompatActivity() {
                     }
                     MotionEvent.ACTION_UP -> {
                         val currPress = System.currentTimeMillis()
-                        timeText.text = (60000 / (currPress - prevPress)).toString()
+                        bpm.setText((60000 / (currPress - prevPress)).toString())
 //                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
                         prevPress = currPress
 
                     }
                 }
+
+
 
 
                 return v?.onTouchEvent(event) ?: true
@@ -217,25 +223,51 @@ class MainActivity : AppCompatActivity() {
                     val index = i
                     btn.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(v: View) {
-                            Log.d("TAG", "The index is$index , TICK")
-                            btn.setBackgroundColor(Color.BLUE)
-//                             beatpattern.elementAt(i)= 1
+                            when (beatpattern.elementAt(i)) {
+                                0 -> {
+                                    Log.d("TAG", "The index is$index , change to TOCK")
+                                    btn.setBackgroundColor(Color.BLUE)
+                                    beatpattern.set(i, 1)
+                                }
+                                1 -> {
+                                    Log.d("TAG", "The index is$index , change to TICK")
+                                    btn.setBackgroundColor(Color.RED)
+                                    beatpattern.set(i, 0)
+                                }
+                            }
+                            Log.d("BEAT_PATTERN", "contents: " + beatpattern.toString())
                         }
                     })
+//                    btn.setOnLongClickListener{_,isChecked TODO fix this
+//                        beatpattern.removeAt(i)
+//                        bpContainer.removeView(btn)
+//                        true
+//                    }
                     bpContainer.addView(btn)
                 }
                 1 -> {
                     val btn = Button(this)
                     btn.id = i
                     btn.text = i.toString()
+
                     btn.setBackgroundColor(Color.BLUE)
                     btn.layoutParams = lparams
                     val index = i
                     btn.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(v: View) {
-                            Log.d("TAG", "The index is$index , TOCK")
-                            btn.setBackgroundColor(Color.RED)
-//                            beatpattern.elementAt(i)= 0
+                            when (beatpattern.elementAt(i)) {
+                                0 -> {
+                                    Log.d("TAG", "The index is$index , change to TOCK")
+                                    btn.setBackgroundColor(Color.BLUE)
+                                    beatpattern.set(i, 1)
+                                }
+                                1 -> {
+                                    Log.d("TAG", "The index is$index , change to TICK")
+                                    btn.setBackgroundColor(Color.RED)
+                                    beatpattern.set(i, 0)
+                                }
+                            }
+                            Log.d("BEAT_PATTERN", "contents: " + beatpattern.toString())
                         }
                     })
                     bpContainer.addView(btn)
