@@ -180,7 +180,10 @@ class MainActivity : AppCompatActivity() {
 
         val timebutton = findViewById<Button>(R.id.time_button)
 
+
         timebutton.setOnTouchListener(object : View.OnTouchListener {
+
+
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
 
                 when (event?.action) {
@@ -211,6 +214,9 @@ class MainActivity : AppCompatActivity() {
 //        lparams.height = 32
 //        lparams.width = 32
 
+        val mainColour = pref.getInt("main_colour", Color.RED)
+//                val offColour =
+
         for (i in beatpattern.indices) {
 
             when (beatpattern.elementAt(i)) {
@@ -218,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                     val btn = Button(this)
                     btn.id = i
                     btn.text = i.toString()
-                    btn.setBackgroundColor(Color.RED)
+                    btn.setBackgroundColor(pref.getInt("main_colour", Color.RED))
                     btn.layoutParams = lparams
                     val index = i
                     btn.setOnClickListener(object : View.OnClickListener {
@@ -226,12 +232,12 @@ class MainActivity : AppCompatActivity() {
                             when (beatpattern.elementAt(i)) {
                                 0 -> {
                                     Log.d("TAG", "The index is$index , change to TOCK")
-                                    btn.setBackgroundColor(Color.BLUE)
+                                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
                                     beatpattern.set(i, 1)
                                 }
                                 1 -> {
                                     Log.d("TAG", "The index is$index , change to TICK")
-                                    btn.setBackgroundColor(Color.RED)
+                                    btn.setBackgroundColor(pref.getInt("main_colour", Color.RED))
                                     beatpattern.set(i, 0)
                                 }
                             }
@@ -250,7 +256,7 @@ class MainActivity : AppCompatActivity() {
                     btn.id = i
                     btn.text = i.toString()
 
-                    btn.setBackgroundColor(Color.BLUE)
+                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
                     btn.layoutParams = lparams
                     val index = i
                     btn.setOnClickListener(object : View.OnClickListener {
@@ -258,12 +264,12 @@ class MainActivity : AppCompatActivity() {
                             when (beatpattern.elementAt(i)) {
                                 0 -> {
                                     Log.d("TAG", "The index is$index , change to TOCK")
-                                    btn.setBackgroundColor(Color.BLUE)
+                                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
                                     beatpattern.set(i, 1)
                                 }
                                 1 -> {
                                     Log.d("TAG", "The index is$index , change to TICK")
-                                    btn.setBackgroundColor(Color.RED)
+                                    btn.setBackgroundColor(pref.getInt("main_colour", Color.RED))
                                     beatpattern.set(i, 0)
                                 }
                             }

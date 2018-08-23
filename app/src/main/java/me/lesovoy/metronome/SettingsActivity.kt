@@ -75,7 +75,6 @@ class SettingsActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 editor.apply()
             }
-
         })
         val weakVibrationSB = findViewById<SeekBar>(R.id.weakVibrationSB)
         weakVibrationSB.progress = pref.getInt("weak_vibration", 10)
@@ -97,29 +96,32 @@ class SettingsActivity : AppCompatActivity() {
 
         })
 
+
         val colorArray = intArrayOf(Color.GREEN, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN, Color.MAGENTA, Color.LTGRAY, Color.GRAY)
 
         val colorPicker = findViewById<View>(R.id.mainPicker) as LineColorPicker
 
         colorPicker.colors = colorArray
 
-        colorPicker.setSelectedColor(Color.RED)
+        colorPicker.setSelectedColor(pref.getInt("main_colour", Color.RED))
 
-        colorPicker.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c)) })
+        colorPicker.setOnColorChangedListener(OnColorChangedListener {
+            c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
+            editor.putInt("main_colour",colorPicker.color).apply()
+        })
 
-        val color = colorPicker.color
+
 
 
         val colorPicker1 = findViewById<View>(R.id.offPicker) as LineColorPicker
 
         colorPicker1.colors = colorArray
 
-        colorPicker1.setSelectedColor(Color.RED)
+        colorPicker1.setSelectedColor(pref.getInt("off_colour",Color.BLUE))
 
-        colorPicker1.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c)) })
-
-        val color1 = colorPicker.color
-
+        colorPicker1.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
+            editor.putInt("off_colour",colorPicker1.color).apply()
+        })
     }
 
 
