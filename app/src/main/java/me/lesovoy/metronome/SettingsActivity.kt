@@ -13,14 +13,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.SeekBar
-import android.widget.Toast
 import java.text.AttributedCharacterIterator
 import android.content.SharedPreferences.Editor
-
-
+import android.widget.*
+import kotlinx.android.synthetic.main.settings_activity.*
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -39,8 +35,26 @@ class SettingsActivity : AppCompatActivity() {
         val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         var weakVibration: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE)
 
+        val vibrationGlobal = findViewById<Switch>(R.id.vibration_global)
+        vibrationGlobal.isChecked = pref.getBoolean("global_vibration", false)
+
+        vibrationGlobal.setOnCheckedChangeListener { _, isChecked ->
+            run {
+                if (isChecked) {
+                    editor.putBoolean("global_vibration", true).apply()
+                    strongVibrationSB.isEnabled = true
+                    weakVibrationSB.isEnabled = true
+                } else {
+                    editor.putBoolean("global_vibration", false).apply()
+                    strongVibrationSB.isEnabled = false
+                    weakVibrationSB.isEnabled = false
+                }
+            }
+        }
+
         val strongVibrationSB = findViewById<SeekBar>(R.id.strongVibrationSB)
         strongVibrationSB.progress = pref.getInt("strong_vibration", 50)
+        strongVibrationSB.isEnabled = pref.getBoolean("global_vibration", false)
         strongVibrationSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
@@ -59,6 +73,7 @@ class SettingsActivity : AppCompatActivity() {
         })
         val weakVibrationSB = findViewById<SeekBar>(R.id.weakVibrationSB)
         weakVibrationSB.progress = pref.getInt("weak_vibration", 10)
+        weakVibrationSB.isEnabled = pref.getBoolean("global_vibration", false)
         weakVibrationSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
