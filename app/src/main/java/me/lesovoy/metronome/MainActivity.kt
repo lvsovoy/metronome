@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit
 class Preset {
 //    bpm :Int
 //    beatpattern :List<Byte>
-
-
 }
 
 class MainActivity : AppCompatActivity() {
@@ -30,24 +28,24 @@ class MainActivity : AppCompatActivity() {
     //    var preset: Preset
     var beatpattern = listOf(0, 1, 1, 1)
     // 0 - Tick 1 - Tock
-    private var totalSteps = beatpattern.size - 1 //TODO: -1?
-    private var currentStep = 0;
+    private var totalSteps = beatpattern.size - 1
+    private var currentStep = 0
     var isPlaying = false
 
 
-    public fun setCurrentStep(i: Int) {
+    fun setCurrentStep(i: Int) {
         currentStep = i
     }
 
-    public fun getCurrentStep(): Int {
+    fun getCurrentStep(): Int {
         return currentStep
     }
 
-    public fun setTotalSteps(i: Int) {
+    fun setTotalSteps(i: Int) {
         totalSteps = i
     }
 
-    public fun getTotalSteps(): Int {
+    fun getTotalSteps(): Int {
         return totalSteps
     }
 
@@ -56,25 +54,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.app_toolbar))
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        val pref = applicationContext.getSharedPreferences("appPref", 0)
+        val editor = pref.edit()
 
         val bpm = findViewById<EditText>(R.id.bpm)
-
-        //titlebar
-//      val titlebar = findViewById<Toolbar>(R.id.app_toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
         playpause.setOnCheckedChangeListener { _, isChecked ->
             run {
-                //TODO proper listener
                 if (isChecked) {
-                    Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
                     isPlaying = true
 
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    var weakVibration: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE);
-                    var strongVibration: VibrationEffect = VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE);
+                    var weakVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("weak_vibration", 1).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
+                    var strongVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("strong_vibration", 50).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
 //                    val mp :MediaPlayer =
 
                     launch {

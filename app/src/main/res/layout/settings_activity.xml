@@ -149,11 +149,13 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/strongVibrationSB"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
+            android:max="100"
+            android:min="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -192,11 +194,13 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <SeekBar
-            android:id="@+id/seekBar2"
+            android:id="@+id/weakVibrationSB"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
+            android:max="100"
+            android:min="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
