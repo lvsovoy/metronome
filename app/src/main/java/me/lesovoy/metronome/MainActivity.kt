@@ -1,9 +1,11 @@
 package me.lesovoy.metronome
 
+//import com.sun.org.apache.xerces.internal.util.DOMUtil.getParent
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -14,13 +16,11 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
-//import com.sun.org.apache.xerces.internal.util.DOMUtil.getParent
-import android.view.ViewManager
+import android.media.SoundPool
 
 
 
@@ -82,21 +82,37 @@ class MainActivity : AppCompatActivity() {
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     var weakVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("weak_vibration", 1).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
                     var strongVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("strong_vibration", 50).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
-//                    val mp :MediaPlayer =
+//                    val tickSound = MediaPlayer.create(this, R.raw.tick)
+//                    val tockSound = MediaPlayer.create(this, R.raw.tock)
+//                    tickSound.isLooping = false
+//                    tockSound.isLooping = false
+//                    tickSound.prepare()
+//                    tockSound.prepare()
+
+                    val sp = SoundPool.Builder().setMaxStreams(2).build()
+                    var tick = sp.load(this, R.raw.tick, 1)
+                    var tock = sp.load(this, R.raw.tock, 1)
+
+
 
                     launch {
 
                         while (isPlaying) {
+//                            tickSound.seekTo(0)
+//                            tockSound.seekTo(0 )
+
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
                                 if (i != 0 && i < 500 && i > 0) {
                                     when (beatpattern.elementAt(currentStep).toInt()) {
                                         0 -> {
                                             //Tick code
+                                            sp.play(tick, 1f, 1f, 0, 0, 1f)
                                             vibrator.vibrate(strongVibration)
                                         }
                                         1 -> {
                                             //Tock code
+                                            sp.play(tock, 1f, 1f, 0, 0, 1f)
                                             vibrator.vibrate(weakVibration)
                                         }
                                     }
@@ -114,8 +130,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         kotlin.coroutines.experimental.coroutineContext.cancel()
-                    }
 
+                    }
 
                 } else {
                     Toast.makeText(this, "not checked", Toast.LENGTH_SHORT).show()
@@ -232,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                             when (beatpattern.elementAt(i)) {
                                 0 -> {
                                     Log.d("TAG", "The index is$index , change to TOCK")
-                                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
+                                    btn.setBackgroundColor(pref.getInt("off_colour", Color.BLUE))
                                     beatpattern.set(i, 1)
                                 }
                                 1 -> {
@@ -256,7 +272,7 @@ class MainActivity : AppCompatActivity() {
                     btn.id = i
                     btn.text = i.toString()
 
-                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
+                    btn.setBackgroundColor(pref.getInt("off_colour", Color.BLUE))
                     btn.layoutParams = lparams
                     val index = i
                     btn.setOnClickListener(object : View.OnClickListener {
@@ -264,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                             when (beatpattern.elementAt(i)) {
                                 0 -> {
                                     Log.d("TAG", "The index is$index , change to TOCK")
-                                    btn.setBackgroundColor(pref.getInt("off_colour",Color.BLUE))
+                                    btn.setBackgroundColor(pref.getInt("off_colour", Color.BLUE))
                                     beatpattern.set(i, 1)
                                 }
                                 1 -> {
