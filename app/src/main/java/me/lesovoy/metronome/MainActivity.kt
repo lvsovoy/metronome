@@ -5,21 +5,22 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.AudioManager
 import android.media.SoundPool
+import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import kotlinx.android.synthetic.main.tap_tempo.*
-import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withTimeout
 import java.util.concurrent.TimeUnit
 
 
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     var isPlaying = false
 
     var prevPress = 0L
-    var tbpm = 120
 
 
     fun setCurrentStep(i: Int) {
@@ -81,70 +81,69 @@ class MainActivity : AppCompatActivity() {
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     var weakVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("weak_vibration", 1).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
                     var strongVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("strong_vibration", 50).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
-//                    val tickSound = MediaPlayer.create(this, R.raw.tick)
-//                    val tockSound = MediaPlayer.create(this, R.raw.tock)
-//                    tickSound.isLooping = false
-//                    tockSound.isLooping = false
-//                    tickSound.prepare()
-//                    tockSound.prepare()
 
                     val sp = SoundPool.Builder().setMaxStreams(2).build()
                     var tick = sp.load(this, R.raw.tick_w, 1)
                     var tock = sp.load(this, R.raw.tock_w, 1)
 
+                    val tg = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+
 
 
                     launch {
-
                         while (isPlaying) {
-//                            tickSound.seekTo(0)
-//                            tockSound.seekTo(0 )
-
+                            var maxlength = 60000L / bpm.editableText.toString().toLong()
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
-                                if (i != 0 && i < 500 && i > 0) {
+                                if (i != 0 && i < 301 && i > 0) {
+//                                    withTimeout(100, TimeUnit.MILLISECONDS) {
+
                                     when (beatpattern.elementAt(currentStep).toInt()) {
                                         0 -> {
-                                            //Tick code
-                                            launch {
-                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+//                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                            var playd = 10
+                                            tg.startTone(3, 10)
+                                            Log.d("maxLength", maxlength.toString())
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(strongVibration)
+                                                playd += pref.getInt("strong_vibration", 1).toInt()
                                             }
-                                            vibrator.vibrate(strongVibration)
+                                            delay(100 - playd)
                                         }
                                         1 -> {
                                             //Tock code
-                                            launch {
-                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            var playd = 10
+                                            tg.startTone(1, 10)
+
+//                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(weakVibration)
+                                                playd += pref.getInt("strong_vibration", 1).toInt()
                                             }
-                                            vibrator.vibrate(weakVibration)
+                                            delay(100 - playd)
+
+                                            }
                                         }
-                                    }
+//                                    }
                                     //List rotation logic
                                     if (currentStep >= totalSteps) {
                                         setCurrentStep(0)
                                     } else {
                                         setCurrentStep(getCurrentStep() + 1)
                                     }
-
-                                    delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
-                                } else {
-//                                    Toast.makeText(content, "Illegal bpm", Toast.LENGTH_SHORT).show()
+                                    delay((60000L / i) - 100, TimeUnit.MILLISECONDS)
                                 }
                             }
+//                            }
                         }
-                        kotlin.coroutines.experimental.coroutineContext.cancel()
-
                     }
-
                 } else {
-                    Toast.makeText(this, "not checked", Toast.LENGTH_SHORT).show()
                     isPlaying = false
-
-
                 }
-//            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
         }
+
+
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
         plus.setOnLongClickListener {
@@ -193,51 +192,41 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
             }
+
+
         }
-
-
 
         val timebutton = findViewById<Button>(R.id.time_button)
-        timebutton.setOnClickListener { it ->
-            val tapTempo = AlertDialog.Builder(this@MainActivity)
-            tapTempo.setView(R.layout.tap_tempo)
-            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
-//            layoutInflater.inflate(R.layout.tap_tempo,null)
 
-            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
-                bpm.setText(tbpm.toString())
+
+        timebutton.setOnTouchListener(object : View.OnTouchListener {
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+                when (event?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+//
+                        Log.d("OnTouchListener", "ACTION_DOWN")
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        val currPress = System.currentTimeMillis()
+                        if ((60000 / (currPress - prevPress)) > 0) {
+                            bpm.setText((60000 / (currPress - prevPress)).toString())
+//                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
+
+                        } else {
+                            bpm.setText(120.toString())
+                        }
+                        prevPress = currPress
+                    }
+                }
+
+
+
+
+                return v?.onTouchEvent(event) ?: true
             }
-            val dialog: AlertDialog = tapTempo.create()
-
-//            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
-//            tapBtn.setOnTouchListener { dialog, which ->
-//                Toast.makeText(this, "test2", Toast.LENGTH_LONG).show()
-//                true
-//            }
-
-            dialog.show()
-
-
-////
-//            tapBtn.setOnClickListener{
-//                val currPress = System.currentTimeMillis()
-//                if ((60000 / (currPress - prevPress)) > 0) {
-//                    tapBpn.text=(60000 / (currPress - prevPress)).toString()
-//                    tbpm = tapBpm.text.toString().toInt()
-//
-////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-//
-//                } else {
-//                    tapBpm.setText(120.toString())
-//                    tbpm = tapBpm.text.toString().toInt()
-//                }
-//                prevPress = currPress
-//        }
-
-
-//FIXME onclick listener
-
-        }
+        })
 
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
 
@@ -313,7 +302,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
 
     }
 
