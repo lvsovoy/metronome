@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.MediaPlayer
+import android.media.AudioManager
+import android.media.SoundPool
+import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -16,13 +18,10 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withTimeout
 import java.util.concurrent.TimeUnit
-import android.media.SoundPool
-
-
 
 
 class Preset {
@@ -82,70 +81,69 @@ class MainActivity : AppCompatActivity() {
                     val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     var weakVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("weak_vibration", 1).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
                     var strongVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("strong_vibration", 50).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
-//                    val tickSound = MediaPlayer.create(this, R.raw.tick)
-//                    val tockSound = MediaPlayer.create(this, R.raw.tock)
-//                    tickSound.isLooping = false
-//                    tockSound.isLooping = false
-//                    tickSound.prepare()
-//                    tockSound.prepare()
 
                     val sp = SoundPool.Builder().setMaxStreams(2).build()
                     var tick = sp.load(this, R.raw.tick_w, 1)
                     var tock = sp.load(this, R.raw.tock_w, 1)
 
+                    val tg = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+
 
 
                     launch {
-
                         while (isPlaying) {
-//                            tickSound.seekTo(0)
-//                            tockSound.seekTo(0 )
-
+                            var maxlength = 60000L / bpm.editableText.toString().toLong()
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
-                                if (i != 0 && i < 500 && i > 0) {
+                                if (i != 0 && i < 301 && i > 0) {
+//                                    withTimeout(100, TimeUnit.MILLISECONDS) {
+
                                     when (beatpattern.elementAt(currentStep).toInt()) {
                                         0 -> {
-                                            //Tick code
-                                            launch {
-                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+//                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                            var playd = 10
+                                            tg.startTone(3, 10)
+                                            Log.d("maxLength", maxlength.toString())
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(strongVibration)
+                                                playd += pref.getInt("strong_vibration", 1).toInt()
                                             }
-                                            vibrator.vibrate(strongVibration)
+                                            delay(100 - playd)
                                         }
                                         1 -> {
                                             //Tock code
-                                            launch {
-                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            var playd = 10
+                                            tg.startTone(1, 10)
+
+//                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(weakVibration)
+                                                playd += pref.getInt("strong_vibration", 1).toInt()
                                             }
-                                            vibrator.vibrate(weakVibration)
+                                            delay(100 - playd)
+
+                                            }
                                         }
-                                    }
+//                                    }
                                     //List rotation logic
                                     if (currentStep >= totalSteps) {
                                         setCurrentStep(0)
                                     } else {
                                         setCurrentStep(getCurrentStep() + 1)
                                     }
-
-                                    delay((60000L / i - 1L), TimeUnit.MILLISECONDS)
-                                } else {
-//                                    Toast.makeText(content, "Illegal bpm", Toast.LENGTH_SHORT).show()
+                                    delay((60000L / i) - 100, TimeUnit.MILLISECONDS)
                                 }
                             }
+//                            }
                         }
-                        kotlin.coroutines.experimental.coroutineContext.cancel()
-
                     }
-
                 } else {
-                    Toast.makeText(this, "not checked", Toast.LENGTH_SHORT).show()
                     isPlaying = false
-
-
                 }
-//            Toast.makeText(this, "checked", Toast.LENGTH_SHORT).show()
             }
         }
+
+
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
         plus.setOnLongClickListener {
@@ -208,16 +206,15 @@ class MainActivity : AppCompatActivity() {
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
 //
-//                        var startTime = System.currentTimeMillis()
                         Log.d("OnTouchListener", "ACTION_DOWN")
                     }
                     MotionEvent.ACTION_UP -> {
                         val currPress = System.currentTimeMillis()
-                        if ((60000 / (currPress - prevPress))>0) {
+                        if ((60000 / (currPress - prevPress)) > 0) {
                             bpm.setText((60000 / (currPress - prevPress)).toString())
 //                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
 
-                        } else{
+                        } else {
                             bpm.setText(120.toString())
                         }
                         prevPress = currPress
