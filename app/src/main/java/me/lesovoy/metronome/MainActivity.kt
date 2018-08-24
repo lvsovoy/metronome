@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
 //                    tockSound.prepare()
 
                     val sp = SoundPool.Builder().setMaxStreams(2).build()
-                    var tick = sp.load(this, R.raw.tick, 1)
-                    var tock = sp.load(this, R.raw.tock, 1)
+                    var tick = sp.load(this, R.raw.tick_w, 1)
+                    var tock = sp.load(this, R.raw.tock_w, 1)
 
 
 
@@ -107,12 +107,16 @@ class MainActivity : AppCompatActivity() {
                                     when (beatpattern.elementAt(currentStep).toInt()) {
                                         0 -> {
                                             //Tick code
-                                            sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                            launch {
+                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                            }
                                             vibrator.vibrate(strongVibration)
                                         }
                                         1 -> {
                                             //Tock code
-                                            sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            launch {
+                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            }
                                             vibrator.vibrate(weakVibration)
                                         }
                                     }
