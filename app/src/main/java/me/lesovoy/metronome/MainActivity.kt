@@ -203,20 +203,24 @@ class MainActivity : AppCompatActivity() {
 
         timebutton.setOnTouchListener(object : View.OnTouchListener {
 
-
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
 
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-//                        startTime = System.currentTimeMillis()
+//
+//                        var startTime = System.currentTimeMillis()
                         Log.d("OnTouchListener", "ACTION_DOWN")
                     }
                     MotionEvent.ACTION_UP -> {
                         val currPress = System.currentTimeMillis()
-                        bpm.setText((60000 / (currPress - prevPress)).toString())
+                        if ((60000 / (currPress - prevPress))>0) {
+                            bpm.setText((60000 / (currPress - prevPress)).toString())
 //                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-                        prevPress = currPress
 
+                        } else{
+                            bpm.setText(120.toString())
+                        }
+                        prevPress = currPress
                     }
                 }
 
