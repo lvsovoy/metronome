@@ -27,7 +27,8 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".TapTempoActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".PopUp"></activity>
     </application>
 
 </manifest>

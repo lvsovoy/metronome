@@ -5,24 +5,22 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import kotlinx.android.synthetic.main.tap_tempo.*
 import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
-import android.media.SoundPool
-
-
 
 
 class Preset {
@@ -41,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     var isPlaying = false
 
     var prevPress = 0L
+    var tbpm = 120
 
 
     fun setCurrentStep(i: Int) {
@@ -194,42 +193,51 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "cant be < 0", Toast.LENGTH_SHORT).show()
             }
-
-
         }
 
+
+
         val timebutton = findViewById<Button>(R.id.time_button)
+        timebutton.setOnClickListener { it ->
+            val tapTempo = AlertDialog.Builder(this@MainActivity)
+            tapTempo.setView(R.layout.tap_tempo)
+            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
+//            layoutInflater.inflate(R.layout.tap_tempo,null)
 
-
-        timebutton.setOnTouchListener(object : View.OnTouchListener {
-
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-                when (event?.action) {
-                    MotionEvent.ACTION_DOWN -> {
-//
-//                        var startTime = System.currentTimeMillis()
-                        Log.d("OnTouchListener", "ACTION_DOWN")
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        val currPress = System.currentTimeMillis()
-                        if ((60000 / (currPress - prevPress))>0) {
-                            bpm.setText((60000 / (currPress - prevPress)).toString())
-//                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-
-                        } else{
-                            bpm.setText(120.toString())
-                        }
-                        prevPress = currPress
-                    }
-                }
-
-
-
-
-                return v?.onTouchEvent(event) ?: true
+            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
+                bpm.setText(tbpm.toString())
             }
-        })
+            val dialog: AlertDialog = tapTempo.create()
+
+//            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
+//            tapBtn.setOnTouchListener { dialog, which ->
+//                Toast.makeText(this, "test2", Toast.LENGTH_LONG).show()
+//                true
+//            }
+
+            dialog.show()
+
+
+////
+//            tapBtn.setOnClickListener{
+//                val currPress = System.currentTimeMillis()
+//                if ((60000 / (currPress - prevPress)) > 0) {
+//                    tapBpn.text=(60000 / (currPress - prevPress)).toString()
+//                    tbpm = tapBpm.text.toString().toInt()
+//
+////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
+//
+//                } else {
+//                    tapBpm.setText(120.toString())
+//                    tbpm = tapBpm.text.toString().toInt()
+//                }
+//                prevPress = currPress
+//        }
+
+
+//FIXME onclick listener
+
+        }
 
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
 
@@ -305,6 +313,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
 
     }
 
