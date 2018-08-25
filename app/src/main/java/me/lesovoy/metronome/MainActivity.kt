@@ -18,10 +18,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withTimeout
-import java.util.concurrent.TimeUnit
 
 
 class Preset {
@@ -71,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         val bpm = findViewById<EditText>(R.id.bpm)
 
+
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
         playpause.setOnCheckedChangeListener { _, isChecked ->
@@ -88,53 +86,52 @@ class MainActivity : AppCompatActivity() {
 
                     val tg = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
 
-
+                    setCurrentStep(0)
+                    var curtime = System.currentTimeMillis()
 
                     launch {
                         while (isPlaying) {
-                            var maxlength = 60000L / bpm.editableText.toString().toLong()
+
                             if (bpm.editableText.toString() != "") {
                                 var i = bpm.editableText.toString().toInt()
                                 if (i != 0 && i < 301 && i > 0) {
-//                                    withTimeout(100, TimeUnit.MILLISECONDS) {
-
-                                    when (beatpattern.elementAt(currentStep).toInt()) {
-                                        0 -> {
-//                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
-                                            var playd = 10
-                                            tg.startTone(3, 10)
-                                            Log.d("maxLength", maxlength.toString())
-                                            if (pref.getBoolean("global_vibration", false)) {
-                                                vibrator.vibrate(strongVibration)
-                                                playd += pref.getInt("strong_vibration", 1).toInt()
+                                    var maxlength = 60000L / bpm.editableText.toString().toLong()
+                                    if (System.currentTimeMillis() == curtime + maxlength) {
+                                        when (beatpattern.elementAt(currentStep).toInt()) {
+                                            0 -> {
+                                                curtime = System.currentTimeMillis()
+                                                //sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                                tg.startTone(3, 10)
+                                                if (pref.getBoolean("global_vibration", false)) {
+                                                    vibrator.vibrate(strongVibration)
+                                                }
+                                                if (currentStep >= totalSteps) {
+                                                    setCurrentStep(0)
+                                                } else {
+                                                    setCurrentStep(getCurrentStep() + 1)
+                                                }
                                             }
-                                            delay(100 - playd)
+                                            1 -> {
+                                                curtime = System.currentTimeMillis()
+                                                //sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                                tg.startTone(1, 10)
+                                                if (pref.getBoolean("global_vibration", false)) {
+                                                    vibrator.vibrate(weakVibration)
+                                                }
+                                                if (currentStep >= totalSteps) {
+                                                    setCurrentStep(0)
+                                                } else {
+                                                    setCurrentStep(getCurrentStep() + 1)
+                                                }
+                                            }
                                         }
-                                        1 -> {
-                                            //Tock code
-                                            var playd = 10
-                                            tg.startTone(1, 10)
-
-//                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
-                                            if (pref.getBoolean("global_vibration", false)) {
-                                                vibrator.vibrate(weakVibration)
-                                                playd += pref.getInt("strong_vibration", 1).toInt()
-                                            }
-                                            delay(100 - playd)
-
-                                            }
-                                        }
-//                                    }
-                                    //List rotation logic
-                                    if (currentStep >= totalSteps) {
-                                        setCurrentStep(0)
-                                    } else {
-                                        setCurrentStep(getCurrentStep() + 1)
                                     }
-                                    delay((60000L / i) - 100, TimeUnit.MILLISECONDS)
+                                    //List rotation logic
+
+//                                    delay((60000L / i) - 100, TimeUnit.MILLISECONDS)
+
                                 }
                             }
-//                            }
                         }
                     }
                 } else {
