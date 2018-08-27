@@ -1,10 +1,12 @@
 package me.lesovoy.metronome
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -27,6 +29,39 @@ class SettingsActivity : AppCompatActivity() {
 
         val pref = applicationContext.getSharedPreferences("appPref", 0)
         val editor = pref.edit()
+
+
+        val soundPref = findViewById<ConstraintLayout>(R.id.SoundSettingLayout)
+        CurrentSound.text = pref.getString("soundPref", "Digital")
+
+        soundPref.setOnClickListener {
+            lateinit var dialog: AlertDialog
+            val arraySound = arrayOf("Digital", "Realistic")
+
+            val builder = AlertDialog.Builder(this)
+
+            builder.setTitle("Choose beat sound")
+            var checkedItem = 0
+            if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                checkedItem = 0
+            } else {
+                checkedItem = 1
+            }
+            builder.setSingleChoiceItems(arraySound, checkedItem) { _, which ->
+                editor.putString("soundPref", arraySound[which]).apply()
+                Log.d("SETTING DIALOG", "selected item: " + pref.getString("soundPref", "Digital"))
+                CurrentSound.text = pref.getString("soundPref", "Digital")
+                dialog.dismiss()
+            }
+
+
+            // Initialize the AlertDialog using builder object
+            dialog = builder.create()
+
+            // Finally, display the alert dialog
+            dialog.show()
+        }
+
 
         val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         var weakVibration: VibrationEffect = VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE)

@@ -113,8 +113,12 @@ class MainActivity : AppCompatActivity() {
                                         when (beatpattern.elementAt(currentStep).toInt()) {
                                             0 -> {
                                                 curtime = System.currentTimeMillis()
-                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
-//                                                tg.startTone(3, 10)
+                                                if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                    sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                                }
+                                                if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                    tg.startTone(3, 10)
+                                                }
                                                 if (pref.getBoolean("global_vibration", false)) {
                                                     vibrator.vibrate(strongVibration)
                                                 }
@@ -126,8 +130,12 @@ class MainActivity : AppCompatActivity() {
                                             }
                                             1 -> {
                                                 curtime = System.currentTimeMillis()
-                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
-//                                                tg.startTone(1, 10)
+                                                if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                    sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                                }
+                                                if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                    tg.startTone(1, 10)
+                                                }
                                                 if (pref.getBoolean("global_vibration", false)) {
                                                     vibrator.vibrate(weakVibration)
                                                 }
