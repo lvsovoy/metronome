@@ -77,7 +77,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_remove_red_eye_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -87,9 +87,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="opacityPercent" value="60" />
-                            <entry key="outputName" value="ic_outline_volume_up_24px" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_add_black_24dp" />
                             <entry key="sourceFile" value="C:\Users\Les\Desktop\outline-volume_up-24px.svg" />
                           </map>
                         </option>

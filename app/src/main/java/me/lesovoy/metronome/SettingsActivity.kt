@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -26,6 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.settings_toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val vibr_info = findViewById<ImageView>(R.id.vibr_info)
         vibr_info.setOnClickListener {
             val vInfo = AlertDialog.Builder(this@SettingsActivity)
