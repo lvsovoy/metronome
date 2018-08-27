@@ -12,12 +12,15 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
 
 
@@ -67,7 +70,17 @@ class MainActivity : AppCompatActivity() {
         val editor = pref.edit()
 
         val bpm = findViewById<EditText>(R.id.bpm)
+        bpm.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
 
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                playpause.isChecked = false
+            }
+        })
 
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
@@ -100,8 +113,8 @@ class MainActivity : AppCompatActivity() {
                                         when (beatpattern.elementAt(currentStep).toInt()) {
                                             0 -> {
                                                 curtime = System.currentTimeMillis()
-                                                //sp.play(tick, 1f, 1f, 0, 0, 1f)
-                                                tg.startTone(3, 10)
+                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+//                                                tg.startTone(3, 10)
                                                 if (pref.getBoolean("global_vibration", false)) {
                                                     vibrator.vibrate(strongVibration)
                                                 }
@@ -113,8 +126,8 @@ class MainActivity : AppCompatActivity() {
                                             }
                                             1 -> {
                                                 curtime = System.currentTimeMillis()
-                                                //sp.play(tock, 1f, 1f, 0, 0, 1f)
-                                                tg.startTone(1, 10)
+                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+//                                                tg.startTone(1, 10)
                                                 if (pref.getBoolean("global_vibration", false)) {
                                                     vibrator.vibrate(weakVibration)
                                                 }
@@ -217,23 +230,23 @@ class MainActivity : AppCompatActivity() {
                         prevPress = currPress
                     }
                 }
-
-
-
-
                 return v?.onTouchEvent(event) ?: true
             }
         })
 
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
 
-        var lparams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        lparams.setMargins(16, 0, 0, 0)
-//        lparams.height = 32
-//        lparams.width = 32
+        drawBP(bpContainer)
 
-        val mainColour = pref.getInt("main_colour", Color.RED)
-//                val offColour =
+
+    }
+
+    fun drawBP(bpContainer: LinearLayout) {
+        val pref = applicationContext.getSharedPreferences("appPref", 0)
+        val editor = pref.edit()
+
+        var lparams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lparams.setMargins(8, 0, 8, 0)
 
         for (i in beatpattern.indices) {
 
@@ -241,7 +254,6 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     val btn = Button(this)
                     btn.id = i
-                    btn.text = i.toString()
                     btn.setBackgroundColor(pref.getInt("main_colour", Color.RED))
                     btn.layoutParams = lparams
                     val index = i
@@ -306,10 +318,6 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
         return super.onCreateOptionsMenu(menu)
-    }
-
-    fun launchSettingsActivity() {
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

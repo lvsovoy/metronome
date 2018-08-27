@@ -1,28 +1,18 @@
 package me.lesovoy.metronome
 
-import android.app.Fragment
 import android.content.Context
-import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.preference.PreferenceFragment
-import android.preference.PreferenceScreen
-import android.support.constraint.R.attr.content
 import android.support.v7.app.AppCompatActivity
-import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import java.text.AttributedCharacterIterator
-import android.content.SharedPreferences.Editor
-import android.graphics.Color
 import android.util.Log
-import android.widget.*
+import android.view.View
+import android.widget.SeekBar
+import android.widget.Switch
 import kotlinx.android.synthetic.main.settings_activity.*
-import uz.shift.colorpicker.OnColorChangedListener
 import uz.shift.colorpicker.LineColorPicker
-
-
+import uz.shift.colorpicker.OnColorChangedListener
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -96,6 +86,19 @@ class SettingsActivity : AppCompatActivity() {
 
         })
 
+        val visualGlobal = findViewById<Switch>(R.id.visual_global)
+        visualGlobal.isChecked = pref.getBoolean("global_visual", false)
+
+        visualGlobal.setOnCheckedChangeListener { _, isChecked ->
+            run {
+                if (isChecked) {
+                    editor.putBoolean("global_visual", true).apply()
+                } else {
+                    editor.putBoolean("global_visual", false).apply()
+                }
+            }
+        }
+
 
         val colorArray = intArrayOf(0xFFEF5350.toInt(), 0xFFec407a.toInt(), 0xffab47bc.toInt(), 0xff7e57c2.toInt(), 0xff5c6bc0.toInt(), 0xff42a5f5.toInt(), 0xff29b6f6.toInt(), 0xff26c6da.toInt(), 0xff26a69a.toInt(), 0xff66bb6a.toInt(), 0xff9ccc65.toInt(), 0xffd4e157.toInt(), 0xffffee58.toInt(), 0xffffca28.toInt(), 0xffffa726.toInt(), 0xffff7043.toInt(), 0xff8d6e63.toInt(), 0xffbdbdbd.toInt(), 0xff78909c.toInt())
 
@@ -105,24 +108,25 @@ class SettingsActivity : AppCompatActivity() {
 
         colorPicker.setSelectedColor(pref.getInt("main_colour", Color.RED))
 
-        colorPicker.setOnColorChangedListener(OnColorChangedListener {
-            c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
-            editor.putInt("main_colour",colorPicker.color).apply()
+        colorPicker.setOnColorChangedListener(OnColorChangedListener { c ->
+            Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
+            editor.putInt("main_colour", colorPicker.color).apply()
         })
-
-
 
 
         val colorPicker1 = findViewById<View>(R.id.offPicker) as LineColorPicker
 
         colorPicker1.colors = colorArray
 
-        colorPicker1.setSelectedColor(pref.getInt("off_colour",Color.BLUE))
+        colorPicker1.setSelectedColor(pref.getInt("off_colour", Color.BLUE))
 
-        colorPicker1.setOnColorChangedListener(OnColorChangedListener { c -> Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
-            editor.putInt("off_colour",colorPicker1.color).apply()
+        colorPicker1.setOnColorChangedListener(OnColorChangedListener { c ->
+            Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
+            editor.putInt("off_colour", colorPicker1.color).apply()
         })
     }
+//TODO add setting to change between digital clicking and analoog
+//    TODO add dialogs about colour
 
 
 }

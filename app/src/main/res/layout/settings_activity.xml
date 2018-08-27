@@ -283,7 +283,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/SettingLayout3">
 
                 <Switch
-                    android:id="@+id/switch4"
+                    android:id="@+id/visual_global"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -297,7 +297,7 @@
                     android:layout_height="32dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/switch4"
+                    app:layout_constraintEnd_toStartOf="@+id/visual_global"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_outline_info_24px" />
 
