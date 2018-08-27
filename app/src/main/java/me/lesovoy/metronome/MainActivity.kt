@@ -11,13 +11,13 @@ import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private var currentStep = 0
     var isPlaying = false
 
-    var prevPress = 0L
+//    var prevPress = 0L
 
 
     fun setCurrentStep(i: Int) {
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                 playpause.isChecked = false
             }
         })
+
 
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
@@ -207,32 +208,43 @@ class MainActivity : AppCompatActivity() {
         }
 
         val timebutton = findViewById<Button>(R.id.time_button)
-
-
-        timebutton.setOnTouchListener(object : View.OnTouchListener {
-
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-                when (event?.action) {
-                    MotionEvent.ACTION_DOWN -> {
-//
-                        Log.d("OnTouchListener", "ACTION_DOWN")
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        val currPress = System.currentTimeMillis()
-                        if ((60000 / (currPress - prevPress)) > 0) {
-                            bpm.setText((60000 / (currPress - prevPress)).toString())
-//                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-
-                        } else {
-                            bpm.setText(120.toString())
-                        }
-                        prevPress = currPress
-                    }
-                }
-                return v?.onTouchEvent(event) ?: true
+        timebutton.setOnClickListener {
+            val tapTempo = AlertDialog.Builder(this@MainActivity)
+            tapTempo.setView(R.layout.tap_tempo)
+            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
+            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
+            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
             }
-        })
+//            tapBtn.setOnClickListener {
+//
+//            }
+            val dialog: AlertDialog = tapTempo.create()
+            dialog.show()
+            //            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+            //
+            //                when (event?.action) {
+            //                    MotionEvent.ACTION_DOWN -> {
+            ////
+            //                        Log.d("OnTouchListener", "ACTION_DOWN")
+            //                    }
+            //                    MotionEvent.ACTION_UP -> {
+            //                        val currPress = System.currentTimeMillis()
+            //                        if ((60000 / (currPress - prevPress)) > 0) {
+            //                            bpm.setText((60000 / (currPress - prevPress)).toString())
+            ////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
+            //
+            //                        } else {
+            //                            bpm.setText(120.toString())
+            //                        }
+            //                        prevPress = currPress
+            //                    }
+            //                }
+            //                return v?.onTouchEvent(event) ?: true
+            //            }
+        }
+
+//        R.id.TapTempo ->
+
 
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
 
@@ -311,7 +323,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -322,6 +333,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.tapTempo ->{
+                val tapIntent = Intent(this, TapTempo::class.java)
+                startActivity(tapIntent)
+            }
             R.id.settings -> {
 //            Launch settings activity
                 val settingsIntent = Intent(this, SettingsActivity::class.java)
@@ -338,4 +353,5 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
 

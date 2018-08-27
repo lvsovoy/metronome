@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Switch
 import kotlinx.android.synthetic.main.settings_activity.*
@@ -24,6 +26,24 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.settings_toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val vibr_info = findViewById<ImageView>(R.id.vibr_info)
+        vibr_info.setOnClickListener {
+            val vInfo = AlertDialog.Builder(this@SettingsActivity)
+            vInfo.setTitle("Warning")
+            vInfo.setIcon(R.drawable.ic_outline_warning_24px)
+            vInfo.setMessage("Prolonged use may negatively impact battery life")
+            val dialog: AlertDialog = vInfo.create()
+            dialog.show()
+        }
+        val visual_info = findViewById<ImageView>(R.id.visual_info)
+        visual_info.setOnClickListener {
+            val visInfo = AlertDialog.Builder(this@SettingsActivity)
+            visInfo.setTitle("Warning")
+            visInfo.setIcon(R.drawable.ic_outline_warning_24px)
+            visInfo.setMessage("High brightness can reduce both battery life and cause screen burn-in.\n\n" + "Bright flashing may cause seizures.")
+            val dialog: AlertDialog = visInfo.create()
+            dialog.show()
+        }
 
         val pref = applicationContext.getSharedPreferences("appPref", 0)
         val editor = pref.edit()
