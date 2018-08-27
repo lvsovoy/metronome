@@ -68,7 +68,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_vibration_black_24dp" />
+                    app:srcCompat="@drawable/ic_outline_volume_up_24px" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -76,13 +76,14 @@
                 android:id="@+id/SoundSettingLayout"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:clickable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SoundLayoutName">
 
                 <TextView
-                    android:id="@+id/categoryName"
+                    android:id="@+id/SoundSettingName"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginStart="32dp"
@@ -99,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/productsans_bold"
-                    android:text="TextView"
+                    android:text="Sound"
                     app:layout_constraintBottom_toTopOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -223,7 +224,6 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="36dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -246,7 +246,6 @@
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
