@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var currentStep = 0
     var isPlaying = false
 
-    var listPreset: MutableList<Int> = null
+    var listPreset: MutableList<Int>? = null
 
 
     fun setCurrentStep(i: Int) {
@@ -383,12 +383,12 @@ class MainActivity : AppCompatActivity() {
 
     fun presetHolder() {
         this.listPreset = mutableListOf()
-        listPreset.add(preset().toString().toInt())
+        listPreset!!.add(preset().toString().toInt())
     }
 
     fun presetDel() {
         this.listPreset = mutableListOf()
-        listPreset.remove(preset().toString().toInt())
+        listPreset!!.removeAt(preset().toString().toInt())
     }
 
 }
