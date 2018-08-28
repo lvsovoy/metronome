@@ -131,4 +131,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
+    <Button
+        android:id="@+id/preset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preset"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="479dp" />
+
 </android.support.constraint.ConstraintLayout>

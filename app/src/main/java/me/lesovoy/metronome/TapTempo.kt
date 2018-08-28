@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
 import kotlinx.android.synthetic.main.tap_tempo.*
+import android.content.Intent
+
+
+
 
 class TapTempo : AppCompatActivity() {
     var prevPress = 0L
@@ -30,6 +34,8 @@ class TapTempo : AppCompatActivity() {
             } else {
                 tap_bpm.text = 120.toString()
             }
+            val intent = intent
+            intent.getIntExtra("LA", 0)
             prevPress = currPress
 
         }

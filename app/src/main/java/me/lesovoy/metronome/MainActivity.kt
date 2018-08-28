@@ -22,6 +22,9 @@ import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
+//import sun.security.krb5.Confounder.intValue
+
+
 
 
 class Preset {
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private var totalSteps = beatpattern.size - 1
     private var currentStep = 0
     var isPlaying = false
+
 
 //    var prevPress = 0L
 
@@ -214,20 +218,26 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+//        var floatingActionButton = findViewById<Button>(R.id.floatingActionButton)
+        var presetBut = findViewById<Button>(R.id.preset)
+        presetBut.setOnClickListener {
+//            Toast.makeText(this, "ListOfElements", Toast.LENGTH_SHORT).show()
+            preset()
+        }
 
-        val timebutton = findViewById<Button>(R.id.time_button)
-        timebutton.setOnClickListener {
-            val tapTempo = AlertDialog.Builder(this@MainActivity)
-            tapTempo.setView(R.layout.tap_tempo)
-            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
-            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
-            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
-            }
+//        val timebutton = findViewById<Button>(R.id.time_button)
+//        timebutton.setOnClickListener {
+//            val tapTempo = AlertDialog.Builder(this@MainActivity)
+//            tapTempo.setView(R.layout.tap_tempo)
+//            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
+//            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
+//            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
+//            }
 //            tapBtn.setOnClickListener {
 //
 //            }
-            val dialog: AlertDialog = tapTempo.create()
-            dialog.show()
+//            val dialog: AlertDialog = tapTempo.create()
+//            dialog.show()
             //            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
             //
             //                when (event?.action) {
@@ -249,9 +259,8 @@ class MainActivity : AppCompatActivity() {
             //                }
             //                return v?.onTouchEvent(event) ?: true
             //            }
-        }
+//        }
 
-//        R.id.TapTempo ->
 
 
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
@@ -343,6 +352,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.tapTempo ->{
                 val tapIntent = Intent(this, TapTempo::class.java)
+                bpm.setText(intent.toString())
                 startActivity(tapIntent)
             }
             R.id.settings -> {
@@ -359,6 +369,13 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun preset(){
+//        val numbers: MutableList<Int> = mutableListOf(beatpattern.toString().toInt())
+//        val readOnlyView: List<Int> = numbers
+        val numbers: MutableList<Int> = mutableListOf(0,1,1,1)
+//        numbers.add(bpm.toString().toInt())
+        Toast.makeText(this, "ListOfElements "+ numbers , Toast.LENGTH_SHORT).show()
+    }
 
 }
 
