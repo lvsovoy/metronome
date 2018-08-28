@@ -11,6 +11,7 @@ import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,18 +21,19 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.tap_tempo.*
 import kotlinx.coroutines.experimental.launch
 
 //import sun.security.krb5.Confounder.intValue
 
 
-class Preset {
-//    bpm :Int
-//    beatpattern :List<Byte>
+class Preset(var pbpm: Int, var pbeatpattern: MutableList<Int>) {
+
+    override fun toString(): String {
+        return "[" + this.pbpm + " " + this.pbeatpattern + "]"
+    }
+
 }
 
-@Suppress("NAME_SHADOWING")
 class MainActivity : AppCompatActivity() {
 
     //    var preset: Preset
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var currentStep = 0
     var isPlaying = false
 
-    var listPreset: MutableList<Int>? = null
+    var PresetList: MutableList<Preset> = mutableListOf(Preset(66, mutableListOf(0, 1, 1, 0)), Preset(122, mutableListOf(1, 0, 1, 0)))
 
 
     fun setCurrentStep(i: Int) {
@@ -72,7 +74,6 @@ class MainActivity : AppCompatActivity() {
         val editor = pref.edit()
 
         val bpm = findViewById<EditText>(R.id.bpm)
-//        bpm.setText(pref.getInt("TapBpm", 120).toString())
         bpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -223,6 +224,24 @@ class MainActivity : AppCompatActivity() {
         drawBP(bpContainer)
 
         val listPreset: MutableList<String> = mutableListOf()
+//        val listPreset: MutableList<String> = mutableListOf()
+
+        var presetBut = findViewById<Button>(R.id.preset)
+        presetBut.setOnClickListener {
+            Log.d("PRESET", "Before: " + PresetList.toString())
+
+            delPreset(PresetList, 0)
+            Log.d("PRESET", "After: " + PresetList.toString())
+
+        }
+
+        val fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        fab.setOnClickListener {
+            var cbeatpattern = beatpattern.toMutableList()
+            var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
+            addPreset(PresetList, current)
+            Log.d("PRESET", PresetList.toString())
+        }
 
         var presetBut = findViewById<Button>(R.id.preset)
         presetBut.setOnClickListener {
@@ -301,7 +320,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
     }
 
 
@@ -316,7 +334,6 @@ class MainActivity : AppCompatActivity() {
             R.id.tapTempo -> {
                 val tapIntent = Intent(this@MainActivity, TapTempo::class.java)
                 startActivity(tapIntent)
-
             }
             R.id.settings -> {
 //            Launch settings activity
@@ -342,17 +359,23 @@ class MainActivity : AppCompatActivity() {
 //        listBpm.add(bpm.text.toString())
 //        Toast.makeText(this, "ListOfElements " + listBpm.toString(), Toast.LENGTH_SHORT).show()
 //        Toast.makeText(this, "ListOfElements " + listBeatpattern.toString(), Toast.LENGTH_SHORT).show()\
-        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
     }
 
-    fun presetHolder() {
-        this.listPreset = mutableListOf()
-        listPreset!!.add(preset().toString().toInt())
+    fun addPreset(PresetList: MutableList<Preset>, Preset: Preset) {
+        PresetList.add(Preset)
     }
 
-    fun presetDel() {
-        this.listPreset = mutableListOf()
-        listPreset!!.removeAt(preset().toString().toInt())
+    fun delPreset(PresetList: MutableList<Preset>, index: Int) {
+        PresetList.removeAt(index)
+    }
+
+    fun drawPreset(PresetList: MutableList<Preset>) {
+
+        for (i in PresetList.indices) {
+
+        }
+
     }
 
     override fun onResume() {
