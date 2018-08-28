@@ -20,6 +20,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.tap_tempo.*
 import kotlinx.coroutines.experimental.launch
 
 //import sun.security.krb5.Confounder.intValue
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         val editor = pref.edit()
 
         val bpm = findViewById<EditText>(R.id.bpm)
+//        bpm.setText(pref.getInt("TapBpm", 120).toString())
         bpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -80,6 +82,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 playpause.isChecked = false
+                editor.putInt("TapBpm", bpm.editableText.toString().toInt()).apply()
             }
         })
 
@@ -216,56 +219,16 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
-//        val timebutton = findViewById<Button>(R.id.time_button)
-//        timebutton.setOnClickListener {
-//            val tapTempo = AlertDialog.Builder(this@MainActivity)
-//            tapTempo.setView(R.layout.tap_tempo)
-//            val view = layoutInflater.inflate(R.layout.tap_tempo, null)
-//            val tapBtn = view.findViewById<Button>(R.id.tap_btn)
-//            tapTempo.setPositiveButton("SET TEMPO") { dialog, which ->
-//            }
-//            tapBtn.setOnClickListener {
-//
-//            }
-//            val dialog: AlertDialog = tapTempo.create()
-//            dialog.show()
-        //            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        //
-        //                when (event?.action) {
-        //                    MotionEvent.ACTION_DOWN -> {
-        ////
-        //                        Log.d("OnTouchListener", "ACTION_DOWN")
-        //                    }
-        //                    MotionEvent.ACTION_UP -> {
-        //                        val currPress = System.currentTimeMillis()
-        //                        if ((60000 / (currPress - prevPress)) > 0) {
-        //                            bpm.setText((60000 / (currPress - prevPress)).toString())
-        ////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-        //
-        //                        } else {
-        //                            bpm.setText(120.toString())
-        //                        }
-        //                        prevPress = currPress
-        //                    }
-        //                }
-        //                return v?.onTouchEvent(event) ?: true
-        //            }
-//        }
-
-
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
         drawBP(bpContainer)
 
-//        val listPreset: MutableList<String> = mutableListOf()
+        val listPreset: MutableList<String> = mutableListOf()
 
-//        var presetBut = findViewById<Button>(R.id.preset)
-//        presetBut.setOnClickListener {
-//            preset()
-////          Toast.makeText(this, "listPreset" + listPreset.toString(), Toast.LENGTH_SHORT).show()
-//        }
-
-
+        var presetBut = findViewById<Button>(R.id.preset)
+        presetBut.setOnClickListener {
+            preset()
+//          Toast.makeText(this, "listPreset" + listPreset.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun drawBP(bpContainer: LinearLayout) {
@@ -338,6 +301,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
     }
 
 
@@ -350,9 +314,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.tapTempo -> {
-                val tapIntent = Intent(this, TapTempo::class.java)
-                bpm.setText(intent.toString())
+                val tapIntent = Intent(this@MainActivity, TapTempo::class.java)
                 startActivity(tapIntent)
+
             }
             R.id.settings -> {
 //            Launch settings activity
@@ -378,7 +342,7 @@ class MainActivity : AppCompatActivity() {
 //        listBpm.add(bpm.text.toString())
 //        Toast.makeText(this, "ListOfElements " + listBpm.toString(), Toast.LENGTH_SHORT).show()
 //        Toast.makeText(this, "ListOfElements " + listBeatpattern.toString(), Toast.LENGTH_SHORT).show()\
-//        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun presetHolder() {
@@ -389,6 +353,15 @@ class MainActivity : AppCompatActivity() {
     fun presetDel() {
         this.listPreset = mutableListOf()
         listPreset!!.removeAt(preset().toString().toInt())
+    }
+
+    override fun onResume() {
+        val pref = applicationContext.getSharedPreferences("appPref", 0)
+        val editor = pref.edit()
+        val bpm = findViewById<EditText>(R.id.bpm)
+        bpm.setText(pref.getInt("TapBpm", 120).toString())
+//        editor.putInt("TapBpm", 120).apply()
+        super.onResume()
     }
 
 }
