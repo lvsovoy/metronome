@@ -11,7 +11,6 @@ import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,9 +21,8 @@ import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
+
 //import sun.security.krb5.Confounder.intValue
-
-
 
 
 class Preset {
@@ -42,8 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var currentStep = 0
     var isPlaying = false
 
-
-//    var prevPress = 0L
+    var listPreset: MutableList<Int> = null
 
 
     fun setCurrentStep(i: Int) {
@@ -218,12 +215,7 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-//        var floatingActionButton = findViewById<Button>(R.id.floatingActionButton)
-        var presetBut = findViewById<Button>(R.id.preset)
-        presetBut.setOnClickListener {
-//            Toast.makeText(this, "ListOfElements", Toast.LENGTH_SHORT).show()
-            preset()
-        }
+
 
 //        val timebutton = findViewById<Button>(R.id.time_button)
 //        timebutton.setOnClickListener {
@@ -238,34 +230,40 @@ class MainActivity : AppCompatActivity() {
 //            }
 //            val dialog: AlertDialog = tapTempo.create()
 //            dialog.show()
-            //            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-            //
-            //                when (event?.action) {
-            //                    MotionEvent.ACTION_DOWN -> {
-            ////
-            //                        Log.d("OnTouchListener", "ACTION_DOWN")
-            //                    }
-            //                    MotionEvent.ACTION_UP -> {
-            //                        val currPress = System.currentTimeMillis()
-            //                        if ((60000 / (currPress - prevPress)) > 0) {
-            //                            bpm.setText((60000 / (currPress - prevPress)).toString())
-            ////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
-            //
-            //                        } else {
-            //                            bpm.setText(120.toString())
-            //                        }
-            //                        prevPress = currPress
-            //                    }
-            //                }
-            //                return v?.onTouchEvent(event) ?: true
-            //            }
+        //            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        //
+        //                when (event?.action) {
+        //                    MotionEvent.ACTION_DOWN -> {
+        ////
+        //                        Log.d("OnTouchListener", "ACTION_DOWN")
+        //                    }
+        //                    MotionEvent.ACTION_UP -> {
+        //                        val currPress = System.currentTimeMillis()
+        //                        if ((60000 / (currPress - prevPress)) > 0) {
+        //                            bpm.setText((60000 / (currPress - prevPress)).toString())
+        ////                        Log.d("OnTouchListener", "ACTION_UP prev:" + prevPress + " this: " + currPress + " bpm: " + (60000 / (currPress - prevPress)))
+        //
+        //                        } else {
+        //                            bpm.setText(120.toString())
+        //                        }
+        //                        prevPress = currPress
+        //                    }
+        //                }
+        //                return v?.onTouchEvent(event) ?: true
+        //            }
 //        }
 
 
-
         val bpContainer = findViewById<LinearLayout>(R.id.beatPatternLayout)
-
         drawBP(bpContainer)
+
+//        val listPreset: MutableList<String> = mutableListOf()
+
+//        var presetBut = findViewById<Button>(R.id.preset)
+//        presetBut.setOnClickListener {
+//            preset()
+////          Toast.makeText(this, "listPreset" + listPreset.toString(), Toast.LENGTH_SHORT).show()
+//        }
 
 
     }
@@ -342,6 +340,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
@@ -350,7 +349,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.tapTempo ->{
+            R.id.tapTempo -> {
                 val tapIntent = Intent(this, TapTempo::class.java)
                 bpm.setText(intent.toString())
                 startActivity(tapIntent)
@@ -369,14 +368,27 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun preset(){
-//        val numbers: MutableList<Int> = mutableListOf(beatpattern.toString().toInt())
-//        val readOnlyView: List<Int> = numbers
-        val numbers: MutableList<Int> = mutableListOf(0,1,1,1)
-//        numbers.add(bpm.toString().toInt())
-        Toast.makeText(this, "ListOfElements "+ numbers , Toast.LENGTH_SHORT).show()
+    fun preset() {
+        val listPreset = mutableListOf<Int>()
+        listPreset.addAll(beatpattern)
+        listPreset.add(bpm.text.toString().toInt())
+//        val listBeatpattern = mutableListOf<Int>()
+//        listBeatpattern.addAll(beatpattern)
+//        val listBpm = mutableListOf<String>()
+//        listBpm.add(bpm.text.toString())
+//        Toast.makeText(this, "ListOfElements " + listBpm.toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "ListOfElements " + listBeatpattern.toString(), Toast.LENGTH_SHORT).show()\
+//        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    fun presetHolder() {
+        this.listPreset = mutableListOf()
+        listPreset.add(preset().toString().toInt())
+    }
+
+    fun presetDel() {
+        this.listPreset = mutableListOf()
+        listPreset.remove(preset().toString().toInt())
     }
 
 }
-
-
