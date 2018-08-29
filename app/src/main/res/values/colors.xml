@@ -15,4 +15,11 @@
     <color name="primaryTextColor">#000000</color>
 
     <color name="secondaryTextColor">#fafafa</color>
+
+    <color name="darkPrimaryColor">#212121</color>
+    <color name="darkPrimaryColorDark">#000</color>
+
+    <color name="darkPrimaryTextColor">#ffffff</color>
+
+
 </resources>

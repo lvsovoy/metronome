@@ -228,10 +228,13 @@ class MainActivity : AppCompatActivity() {
 
         var presetBut = findViewById<Button>(R.id.preset)
         presetBut.setOnClickListener {
-            Log.d("PRESET", "Before: " + PresetList.toString())
+            //            Log.d("PRESET", "Before: " + PresetList.toString())
+//
+//            delPreset(PresetList, 0)
+//            Log.d("PRESET", "After: " + PresetList.toString())
 
-            delPreset(PresetList, 0)
-            Log.d("PRESET", "After: " + PresetList.toString())
+            setTheme(R.style.DarkAppTheme)
+
 
         }
 

@@ -10,7 +10,7 @@
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/primaryColor"
         android:elevation="0dp">
 
         <TextView
@@ -21,6 +21,7 @@
             android:fontFamily="@font/productsans_regular"
             android:text="Metronome"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textColor="@color/primaryTextColor"
             tools:layout_editor_absoluteX="167dp"
             tools:layout_editor_absoluteY="18dp" />
 
@@ -152,6 +153,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@color/primaryColor"
         app:layout_constraintBottom_toTopOf="@+id/preset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
