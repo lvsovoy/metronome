@@ -24,7 +24,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView6"
+                android:id="@+id/removePresetButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"

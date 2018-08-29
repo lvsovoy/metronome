@@ -33,6 +33,9 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
 
         init {
             itemView.setOnClickListener {
+                // SET DATA TO PRESET
+            }
+            itemView.removePresetButton.setOnClickListener {
 
             }
         }
