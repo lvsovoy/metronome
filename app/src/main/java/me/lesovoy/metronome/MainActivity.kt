@@ -243,11 +243,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("PRESET", PresetList.toString())
         }
 
-        var presetBut = findViewById<Button>(R.id.preset)
-        presetBut.setOnClickListener {
-            preset()
-//          Toast.makeText(this, "listPreset" + listPreset.toString(), Toast.LENGTH_SHORT).show()
-        }
     }
 
     fun drawBP(bpContainer: LinearLayout) {
@@ -347,19 +342,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    fun preset() {
-        val listPreset = mutableListOf<Int>()
-        listPreset.addAll(beatpattern)
-        listPreset.add(bpm.text.toString().toInt())
-//        val listBeatpattern = mutableListOf<Int>()
-//        listBeatpattern.addAll(beatpattern)
-//        val listBpm = mutableListOf<String>()
-//        listBpm.add(bpm.text.toString())
-//        Toast.makeText(this, "ListOfElements " + listBpm.toString(), Toast.LENGTH_SHORT).show()
-//        Toast.makeText(this, "ListOfElements " + listBeatpattern.toString(), Toast.LENGTH_SHORT).show()\
-//        Toast.makeText(this, "ListOfElements " + listPreset.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun addPreset(PresetList: MutableList<Preset>, Preset: Preset) {
