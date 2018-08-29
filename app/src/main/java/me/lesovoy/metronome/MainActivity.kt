@@ -13,6 +13,9 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -234,17 +237,27 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("PRESET", "After: " + PresetList.toString())
 
             setTheme(R.style.DarkAppTheme)
-
+            recreate()
 
         }
+
+
+        val layoutManager = GridLayoutManager(this, 2)
+        layoutManager.orientation = GridLayoutManager.VERTICAL
+        PresetLayout.layoutManager = layoutManager
+
+        val adapter = PresetAdapter(this, PresetList)
+        PresetLayout.adapter = adapter
 
         val fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         fab.setOnClickListener {
             var cbeatpattern = beatpattern.toMutableList()
             var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
             addPreset(PresetList, current)
+            adapter.notifyDataSetChanged()
             Log.d("PRESET", PresetList.toString())
         }
+
 
     }
 

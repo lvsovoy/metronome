@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primaryColor"
+        android:background="?attr/colorPrimary"
         android:elevation="0dp">
 
         <TextView
@@ -21,7 +22,6 @@
             android:fontFamily="@font/productsans_regular"
             android:text="Metronome"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            android:textColor="@color/primaryTextColor"
             tools:layout_editor_absoluteX="167dp"
             tools:layout_editor_absoluteY="18dp" />
 
@@ -29,7 +29,6 @@
 
     <EditText
         android:id="@+id/bpm"
-        style="@android:style/Widget.Material.EditText"
         android:layout_width="215dp"
         android:layout_height="198dp"
         android:layout_marginTop="8dp"
@@ -41,7 +40,6 @@
         android:text="120"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/playpause"
         app:layout_constraintEnd_toStartOf="@+id/plus"
         app:layout_constraintHorizontal_bias="0.5"
@@ -147,16 +145,18 @@
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/PresetLayout"
         android:layout_width="395dp"
         android:layout_height="280dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/primaryColor"
         app:layout_constraintBottom_toTopOf="@+id/preset"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

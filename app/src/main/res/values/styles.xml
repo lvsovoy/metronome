@@ -10,7 +10,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="DarkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="DarkAppTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/darkPrimaryColor</item>
         <item name="colorPrimaryDark">@color/darkPrimaryColorDark</item>
@@ -18,6 +18,13 @@
         <item name="android:statusBarColor">@color/darkPrimaryColor</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:textColor">@color/darkPrimaryTextColor</item>
+        <item name="android:colorBackground">@color/darkPrimaryColor</item>
+        <item name="android:navigationBarColor">@color/darkPrimaryColor</item>
+        <item name="android:colorForeground">@color/secondaryColor</item>
+        <item name="android:textColorPrimaryInverse">@color/darkPrimaryColor</item>
+        <item name="android:textColorSecondary">@color/secondaryColor</item>
+        <item name="android:textColorSecondaryInverse">@color/secondaryColor</item>
+        <item name="android:colorButtonNormal">@color/secondaryDarkColor</item>
     </style>
 
 </resources>
