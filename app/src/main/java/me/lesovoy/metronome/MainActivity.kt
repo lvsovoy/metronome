@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
             var cbeatpattern = beatpattern.toMutableList()
             var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
             addPreset(PresetList, current)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(PresetList.size)
             Log.d("PRESET", PresetList.toString())
         }
 
@@ -382,6 +382,8 @@ class MainActivity : AppCompatActivity() {
         val bpm = findViewById<EditText>(R.id.bpm)
         bpm.setText(pref.getInt("TapBpm", 120).toString())
 //        editor.putInt("TapBpm", 120).apply()
+//        recreate()
+
         super.onResume()
     }
 
