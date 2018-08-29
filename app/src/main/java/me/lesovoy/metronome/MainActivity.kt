@@ -14,8 +14,6 @@ import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,6 +23,7 @@ import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
+
 
 //import sun.security.krb5.Confounder.intValue
 
@@ -76,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         val pref = applicationContext.getSharedPreferences("appPref", 0)
         val editor = pref.edit()
 
+
         val bpm = findViewById<EditText>(R.id.bpm)
         bpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -86,13 +86,16 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 playpause.isChecked = false
-                editor.putInt("TapBpm", bpm.editableText.toString().toInt()).apply()
+                if (bpm.editableText.toString() >= 0.toString() && bpm.editableText.toString() <= 300.toString()) {
+                    editor.putInt("TapBpm", bpm.editableText.toString().toInt()).apply()
+                }
             }
         })
 
 
         //playpause button
         val playpause = findViewById<ToggleButton>(R.id.playpause)
+
         playpause.setOnCheckedChangeListener { _, isChecked ->
             run {
                 if (isChecked) {
@@ -108,60 +111,73 @@ class MainActivity : AppCompatActivity() {
 
                     val tg = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
 
-                    setCurrentStep(0)
+                    setCurrentStep(-1)
                     var curtime = System.currentTimeMillis()
 
                     launch {
                         while (isPlaying) {
+                            if (currentStep >= 0) {
+                                if (bpm.editableText.toString() != "") {
+                                    if (bpm.editableText.toString().toInt() < 301) {
+                                        var i = bpm.editableText.toString().toInt()
+                                        var maxlength = 60000L / i.toLong()
+                                        if (i != 0 && i < 301 && i > 0) {
 
-                            if (bpm.editableText.toString() != "") {
-                                var i = bpm.editableText.toString().toInt()
-                                if (i != 0 && i < 301 && i > 0) {
-                                    var maxlength = 60000L / bpm.editableText.toString().toLong()
-                                    if (System.currentTimeMillis() == curtime + maxlength) {
-                                        when (beatpattern.elementAt(currentStep).toInt()) {
-                                            0 -> {
+                                            if (System.currentTimeMillis() > (curtime + maxlength)) {
+                                                when (beatpattern.elementAt(currentStep).toInt()) {
+                                                    0 -> {
+                                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                            sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                                        }
+                                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                            tg.startTone(3, 10)
+                                                        }
+                                                        if (pref.getBoolean("global_vibration", false)) {
+                                                            vibrator.vibrate(strongVibration)
+                                                        }
+
+                                                        if (currentStep >= totalSteps) {
+                                                            setCurrentStep(0)
+                                                        } else {
+                                                            setCurrentStep(getCurrentStep() + 1)
+                                                        }
+
+                                                    }
+                                                    1 -> {
+//                                                    curtime = System.currentTimeMillis()
+                                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                            sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                                        }
+                                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                            tg.startTone(1, 10)
+                                                        }
+                                                        if (pref.getBoolean("global_vibration", false)) {
+                                                            vibrator.vibrate(weakVibration)
+                                                        }
+                                                        if (currentStep >= totalSteps) {
+                                                            setCurrentStep(0)
+                                                        } else {
+                                                            setCurrentStep(getCurrentStep() + 1)
+                                                        }
+
+                                                    }
+                                                }
                                                 curtime = System.currentTimeMillis()
-                                                if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-                                                    sp.play(tick, 1f, 1f, 0, 0, 1f)
-                                                }
-                                                if (pref.getString("soundPref", "Digital").equals("Digital")) {
-                                                    tg.startTone(3, 10)
-                                                }
-                                                if (pref.getBoolean("global_vibration", false)) {
-                                                    vibrator.vibrate(strongVibration)
-                                                }
-                                                if (currentStep >= totalSteps) {
-                                                    setCurrentStep(0)
-                                                } else {
-                                                    setCurrentStep(getCurrentStep() + 1)
-                                                }
-                                            }
-                                            1 -> {
-                                                curtime = System.currentTimeMillis()
-                                                if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-                                                    sp.play(tock, 1f, 1f, 0, 0, 1f)
-                                                }
-                                                if (pref.getString("soundPref", "Digital").equals("Digital")) {
-                                                    tg.startTone(1, 10)
-                                                }
-                                                if (pref.getBoolean("global_vibration", false)) {
-                                                    vibrator.vibrate(weakVibration)
-                                                }
-                                                if (currentStep >= totalSteps) {
-                                                    setCurrentStep(0)
-                                                } else {
-                                                    setCurrentStep(getCurrentStep() + 1)
-                                                }
                                             }
                                         }
+
+                                    } else {
+                                        bpm.setText(300.toString())
                                     }
-                                    //List rotation logic
-
-//                                    delay((60000L / i) - 100, TimeUnit.MILLISECONDS)
-
+                                } else {
+                                    bpm.setText(1.toString())
                                 }
+                            } else {
+                                sp.play(tick, 0f, 0f, 0, 0, 1f)
+                                setCurrentStep(getCurrentStep() + 1)
+//                                setCurrentStep(0)
                             }
+
                         }
                     }
                 } else {
@@ -174,21 +190,21 @@ class MainActivity : AppCompatActivity() {
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
         plus.setOnLongClickListener {
-            if (bpm.editableText.toString() >= 0.toString()) {
+            if (bpm.editableText.toString().toInt() in 0..290) {
                 Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
                 var i = bpm.editableText.toString().toInt() + 10
                 bpm.setText(i.toString())
                 true
 
             } else {
-                Toast.makeText(this, "+10", Toast.LENGTH_SHORT).show()
-                bpm.setText(10.toString())
+                Toast.makeText(this, "cant be > 300", Toast.LENGTH_SHORT).show()
+                bpm.setText(300.toString())
                 true
             }
         }
 
         plus.setOnClickListener {
-            if (bpm.editableText.toString() >= 0.toString()) {
+            if (bpm.editableText.toString() >= 0.toString() && bpm.editableText.toString().toInt() < 300) {
                 var i = bpm.editableText.toString().toInt() + 1
                 bpm.setText(i.toString())
             } else {
@@ -199,10 +215,11 @@ class MainActivity : AppCompatActivity() {
 
         val minus = findViewById<Button>(R.id.minus)
         var i = bpm.editableText.toString()
-        minus.setOnLongClickListener {
-            //            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
 
-            if (bpm.editableText.toString() != "" && i < 10.toString()) {
+        minus.setOnLongClickListener {
+            //                        if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
+
+            if (bpm.editableText.toString() != "" && bpm.editableText.toString().toInt() >= 10) {
                 Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
                 val i = bpm.editableText.toString().toInt() - 10
                 bpm.setText(i.toString())
@@ -213,7 +230,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         minus.setOnClickListener {
-            if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 0.toString()) {
+            if (bpm.editableText.toString() != "" && bpm.editableText.toString().toInt() > 0) {
                 var i = bpm.editableText.toString().toInt() - 1
                 bpm.setText(i.toString())
             } else {
@@ -228,6 +245,7 @@ class MainActivity : AppCompatActivity() {
 
         val listPreset: MutableList<String> = mutableListOf()
 //        val listPreset: MutableList<String> = mutableListOf()
+
 
         var presetBut = findViewById<Button>(R.id.preset)
         presetBut.setOnClickListener {
@@ -369,7 +387,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun drawPreset(PresetList: MutableList<Preset>) {
-
         for (i in PresetList.indices) {
 
         }
