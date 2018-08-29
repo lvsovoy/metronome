@@ -36,6 +36,10 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
                 // SET DATA TO PRESET
             }
             itemView.removePresetButton.setOnClickListener {
+                //DELETE CURRENT PRESET
+                presetList.removeAt(adapterPosition)
+                notifyItemRemoved(adapterPosition)
+
 
             }
         }
