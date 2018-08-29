@@ -175,9 +175,7 @@ class MainActivity : AppCompatActivity() {
                             } else {
                                 sp.play(tick, 0f, 0f, 0, 0, 1f)
                                 setCurrentStep(getCurrentStep() + 1)
-//                                setCurrentStep(0)
                             }
-
                         }
                     }
                 } else {
