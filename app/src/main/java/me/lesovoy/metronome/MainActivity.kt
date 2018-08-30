@@ -1,7 +1,5 @@
 package me.lesovoy.metronome
 
-//import com.sun.org.apache.xerces.internal.util.DOMUtil.getParent
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -25,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
 
 
-//import sun.security.krb5.Confounder.intValue
 
 
 class Preset(var pbpm: Int, var pbeatpattern: MutableList<Int>) {
@@ -37,6 +34,9 @@ class Preset(var pbpm: Int, var pbeatpattern: MutableList<Int>) {
 }
 
 class MainActivity : AppCompatActivity() {
+
+    var presetBpm: Int = 120
+    var presetBeatpattern: MutableList<Int> = mutableListOf(0, 1, 1, 1)
 
     //    var preset: Preset
     var beatpattern = mutableListOf(0, 1, 1, 1)
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
+    //    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val bpm = findViewById<EditText>(R.id.bpm)
+        bpm.isFocusable = false
         bpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -91,6 +92,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        bpm.setOnLongClickListener {
+            bpm.isFocusable = !bpm.isFocusable
+            true
+        }
 
 
         //playpause button
@@ -381,16 +387,6 @@ class MainActivity : AppCompatActivity() {
         PresetList.add(Preset)
     }
 
-    fun delPreset(PresetList: MutableList<Preset>, index: Int) {
-        PresetList.removeAt(index)
-    }
-
-    fun drawPreset(PresetList: MutableList<Preset>) {
-        for (i in PresetList.indices) {
-
-        }
-
-    }
 
     override fun onResume() {
         val pref = applicationContext.getSharedPreferences("appPref", 0)
