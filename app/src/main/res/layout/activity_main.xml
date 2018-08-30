@@ -29,9 +29,8 @@
 
     <EditText
         android:id="@+id/bpm"
-        android:layout_width="215dp"
-        android:layout_height="198dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="300sp"
+        android:layout_height="140sp"
         android:ems="10"
         android:fontFamily="@font/productsans_regular"
         android:inputType="number"
@@ -40,7 +39,6 @@
         android:text="120"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        app:layout_constraintBottom_toTopOf="@+id/playpause"
         app:layout_constraintEnd_toStartOf="@+id/plus"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/minus"
@@ -80,21 +78,19 @@
         android:id="@+id/playpause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/productsans_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+        app:layout_constraintTop_toBottomOf="@+id/BeatpatternLayout" />
 
     <LinearLayout
-        android:id="@+id/beatPatternLayout"
+        android:id="@+id/oldbeatPatternLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="350dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="13dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -109,49 +105,64 @@
         android:layout_marginEnd="10dp"
         android:text="Time"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/beatPatternLayout"
+        app:layout_constraintBottom_toTopOf="@+id/oldbeatPatternLayout"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/preset"
         android:layout_width="88dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="552dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="1060dp"
         android:elevation="8dp"
         android:text="Preset"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginBottom="564dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="1060dp"
         android:clickable="true"
         app:elevation="8dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/PresetLayout"
-        android:layout_width="355dp"
-        android:layout_height="216dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/beatPatternLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/playpause" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/BeatpatternLayout"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/beat_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+
+    <ImageView
+        android:id="@+id/beat_add"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/BeatpatternLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/BeatpatternLayout"
+        app:srcCompat="@drawable/ic_outline_add_circle_outline_24px" />
 
 </android.support.constraint.ConstraintLayout>

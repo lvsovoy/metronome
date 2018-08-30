@@ -180,8 +180,6 @@ class SettingsActivity : AppCompatActivity() {
             editor.putInt("off_colour", colorPicker1.color).apply()
         })
     }
-//TODO add setting to change between digital clicking and analoog
-//    TODO add dialogs about colour
 
 
 }

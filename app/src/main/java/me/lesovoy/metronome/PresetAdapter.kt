@@ -1,7 +1,9 @@
 package me.lesovoy.metronome
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import me.lesovoy.metronome.R.id.*
 
 class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetViewHolder {
+
         val view = LayoutInflater.from(context).inflate(R.layout.preset_card, parent, false)
         return PresetViewHolder(view)
 
@@ -28,6 +31,7 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
     }
 
     inner class PresetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
 
         var pos = 0
 
@@ -47,8 +51,24 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
         }
 
         fun setData(preset: Preset, position: Int) {
+
             itemView.PresetBpm.text = preset.pbpm.toString()
-            itemView.BeatPatternString.text = preset.pbeatpattern.toString()
+            //String gigamajigery
+            var string = preset.pbeatpattern.toString()
+            string = string.substring(1, string.length - 1)
+            string = string.replace(",", "")
+
+            val colortick: Int = 0
+
+
+//            string = string.replace("1","<font color =\"#f442aa\">&#x2022;</font>")
+//            string = string.replace("1","<font color =\"#f442aa\">&#x2022;</font>")
+
+            string = string.replace("0", "x")
+            string = string.replace("1", "&#x2022;")
+
+
+            itemView.BeatPatternString.text = Html.fromHtml(string, 0)
         }
     }
 }
