@@ -1,13 +1,16 @@
 package me.lesovoy.metronome
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.AudioManager
 import android.media.SoundPool
 import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
 
     //    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -114,10 +118,14 @@ class MainActivity : AppCompatActivity() {
 
                     val tg = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
 
+                    var g = 0
+                    var b = 0
+
                     currentStep = -1
                     var curtime = System.currentTimeMillis()
 
                     launch {
+                        val background = findViewById<ConstraintLayout>(R.id.background)
                         while (isPlaying) {
                             totalSteps = beatpattern.size - 1
                             if (currentStep >= 0) {
@@ -126,7 +134,6 @@ class MainActivity : AppCompatActivity() {
                                         var i = bpm.editableText.toString().toInt()
                                         var maxlength = 60000L / i.toLong()
                                         if (i != 0 && i < 301 && i > 0) {
-
                                             if (System.currentTimeMillis() == (curtime + maxlength)) {
                                                 when (beatpattern.elementAt(currentStep).toInt()) {
                                                     0 -> {
@@ -145,7 +152,9 @@ class MainActivity : AppCompatActivity() {
                                                         } else {
                                                             currentStep++
                                                         }
-
+                                                        background.setBackgroundColor(Color.rgb(255,0, b))
+                                                        if(b+100<255){
+                                                            b+=100} else {b=0}
                                                     }
                                                     1 -> {
 //                                                    curtime = System.currentTimeMillis()
@@ -163,13 +172,15 @@ class MainActivity : AppCompatActivity() {
                                                         } else {
                                                             currentStep++
                                                         }
-
+                                                        background.setBackgroundColor(Color.rgb(0,g,255))
+                                                        if(g+100<255){
+                                                        g+=100} else {g=0}
                                                     }
                                                 }
+
                                                 curtime = System.currentTimeMillis()
                                             }
                                         }
-
                                     } else {
                                         bpm.setText(300.toString())
                                     }
@@ -181,9 +192,12 @@ class MainActivity : AppCompatActivity() {
                                 currentStep++
                             }
                         }
+                        b = 0
+                        g = 0
                     }
                 } else {
                     isPlaying = false
+                    background.setBackgroundColor(0xfafafa)
                 }
             }
         }
@@ -292,6 +306,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+
 //    fun drawBP(bpContainer: LinearLayout) {
 //        val pref = applicationContext.getSharedPreferences("appPref", 0)
 //        val editor = pref.edit()
@@ -379,6 +395,13 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.toolbar, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
+//    private fun getColor(red: Int, green: Int, blue: Int): Int {
+//        for (i in 1..beatpattern.size){
+//            green+25
+//        }
+//        return getColor(0,0+25,255)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
