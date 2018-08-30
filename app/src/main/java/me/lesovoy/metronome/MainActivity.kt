@@ -267,13 +267,14 @@ class MainActivity : AppCompatActivity() {
 
         val fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         fab.setOnClickListener {
-            var cbeatpattern = beatpattern.toMutableList()
-            var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
-            addPreset(PresetList, current)
-            adapter.notifyItemInserted(PresetList.size)
-            Log.d("PRESET", PresetList.toString())
+            if (PresetList.size < 4) {
+                var cbeatpattern = beatpattern.toMutableList()
+                var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
+                addPreset(PresetList, current)
+                adapter.notifyItemInserted(PresetList.size)
+                Log.d("PRESET", PresetList.toString())
+            }
         }
-
 
     }
 
