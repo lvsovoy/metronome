@@ -1,15 +1,16 @@
 package me.lesovoy.metronome
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import kotlinx.android.synthetic.main.preset_card.view.*
-import me.lesovoy.metronome.R.id.*
+import me.lesovoy.metronome.R.id.BeatPatternString
+import me.lesovoy.metronome.R.id.PresetBpm
+
 
 class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetViewHolder {
@@ -18,6 +19,7 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
         return PresetViewHolder(view)
 
     }
+
 
     override fun getItemCount(): Int {
         return presetList.size
@@ -32,11 +34,16 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
 
     inner class PresetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
         var pos = 0
 
         init {
             itemView.setOnClickListener {
+                val bpm = PresetBpm
+                val pattern = BeatPatternString
+                Log.d("bpm", bpm.toString())
+                Log.d("pattern", pattern.toString())
+
+
                 // SET DATA TO PRESET
 
             }

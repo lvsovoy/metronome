@@ -94,70 +94,84 @@ class MainActivity : AppCompatActivity() {
         var g = 0
         var b = 0
 
-        currentStep = 0
+        currentStep = -1
 
 
         val runnable = object : Runnable {
             override fun run() {
-                var i = bpm.editableText.toString().toInt()
+               var i =120
                 var maxlength = 500L
 
                 totalSteps = beatpattern.size - 1
-                if (bpm.editableText.toString() != "") {
-                    if (bpm.editableText.toString().toInt() < 301) {
-                        if (i != 0 && i < 301 && i > 0) {
-                            maxlength = 60000L / i.toLong()
+                if (currentStep >= 0) {
+                    if (bpm.editableText.toString() != "") {
+                        i = bpm.editableText.toString().toInt()
+                        if (bpm.editableText.toString().toInt() < 301) {
                             if (i != 0 && i < 301 && i > 0) {
-                                when (beatpattern.elementAt(currentStep).toInt()) {
-                                    0 -> {
-                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-                                            sp.play(tick, 1f, 1f, 0, 0, 1f)
-                                        }
-                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
-                                            tg.startTone(3, 10)
-                                        }
-                                        if (pref.getBoolean("global_vibration", false)) {
-                                            vibrator.vibrate(strongVibration)
-                                        }
+                                maxlength = 60000L / i.toLong()
+                                if (i != 0 && i < 301 && i > 0) {
+                                    when (beatpattern.elementAt(currentStep).toInt()) {
+                                        0 -> {
+                                            if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                sp.play(tick, 1f, 1f, 0, 0, 1f)
+                                            }
+                                            if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                tg.startTone(3, 10)
+                                            }
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(strongVibration)
+                                            }
 
-                                        if (currentStep >= totalSteps) {
-                                            currentStep = 0
-                                        } else {
-                                            currentStep++
+                                            if (currentStep >= totalSteps) {
+                                                currentStep = 0
+                                            } else {
+                                                currentStep++
+                                            }
+                                            if (pref.getBoolean("global_visual", false)) {
+                                                background.setBackgroundColor(Color.rgb(255, 0, b))
+                                                if (b + 100 < 255) {
+                                                    b += 100
+                                                } else {
+                                                    b = 0
+                                                }
+                                            }
                                         }
-                                        background.setBackgroundColor(Color.rgb(255, 0, b))
-                                        if (b + 100 < 255) {
-                                            b += 100
-                                        } else {
-                                            b = 0
-                                        }
-                                    }
-                                    1 -> {
-                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-                                            sp.play(tock, 1f, 1f, 0, 0, 1f)
-                                        }
-                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
-                                            tg.startTone(1, 10)
-                                        }
-                                        if (pref.getBoolean("global_vibration", false)) {
-                                            vibrator.vibrate(weakVibration)
-                                        }
-                                        if (currentStep >= totalSteps) {
-                                            currentStep = 0
-                                        } else {
-                                            currentStep++
-                                        }
-                                        background.setBackgroundColor(Color.rgb(0, g, 255))
-                                        if (g + 100 < 255) {
-                                            g += 100
-                                        } else {
-                                            g = 0
+                                        1 -> {
+                                            if (pref.getString("soundPref", "Digital").equals("Realistic")) {
+                                                sp.play(tock, 1f, 1f, 0, 0, 1f)
+                                            }
+                                            if (pref.getString("soundPref", "Digital").equals("Digital")) {
+                                                tg.startTone(1, 10)
+                                            }
+                                            if (pref.getBoolean("global_vibration", false)) {
+                                                vibrator.vibrate(weakVibration)
+                                            }
+                                            if (currentStep >= totalSteps) {
+                                                currentStep = 0
+                                            } else {
+                                                currentStep++
+                                            }
+                                            if (pref.getBoolean("global_visual", false)) {
+                                                background.setBackgroundColor(Color.rgb(0, g, 255))
+                                                if (g + 100 < 255) {
+                                                    g += 100
+                                                } else {
+                                                    g = 0
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            bpm.setText(300.toString())
                         }
+                    } else {
+                        bpm.setText(1.toString())
                     }
+                } else {
+                    sp.play(tick, 0f, 0f, 0, 0, 1f)
+                    currentStep++
                 }
 
                 handler.postDelayed(this, maxlength)
@@ -179,6 +193,9 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     isPlaying = false
                     handler.removeCallbacks(runnable)
+                    b = 0
+                    g = 0
+                    background.setBackgroundColor(0xfafafa)
                 }
             }
         }
@@ -378,15 +395,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-//    override fun onResume() {
-//        val pref = applicationContext.getSharedPreferences("appPref", 0)
-//        val editor = pref.edit()
-//        val bpm = findViewById<EditText>(R.id.bpm)
-//        bpm.setText(pref.getInt("TapBpm", 120).toString())
-////        editor.putInt("TapBpm", 120).apply()
-////        recreate()
-//
-//        super.onResume()
-//    }
+    override fun onResume() {
+        val pref = applicationContext.getSharedPreferences("appPref", 0)
+        val editor = pref.edit()
+        val bpm = findViewById<EditText>(R.id.bpm)
+        bpm.setText(pref.getInt("TapBpm", 120).toString())
+//        editor.putInt("TapBpm", 120).apply()
+//        recreate()
+
+        super.onResume()
+    }
 
 }

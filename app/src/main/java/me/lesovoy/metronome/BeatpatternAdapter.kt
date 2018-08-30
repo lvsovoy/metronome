@@ -51,9 +51,10 @@ class BeatpatternAdapter(val context: Context, val beatPattern: MutableList<Int>
                 }
             }
             itemView.setOnLongClickListener {
+                if (beatPattern.size>1){
                 //DELETE CURRENT PRESET
                 beatPattern.removeAt(adapterPosition)
-                notifyItemRemoved(adapterPosition)
+                notifyItemRemoved(adapterPosition)}
                 true
             }
         }
