@@ -1,5 +1,6 @@
 package me.lesovoy.metronome
 
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -43,7 +44,7 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
                 Log.d("bpm", bpm.toString())
                 Log.d("pattern", pattern.toString())
 
-
+                (context as MainActivity).setPreset(presetList[adapterPosition])
                 // SET DATA TO PRESET
 
             }

@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     val handler = Handler()
 
+
     //    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                playpause.isChecked = false
+//                playpause.isChecked = false
                 if (bpm.editableText.toString() >= 0.toString() && bpm.editableText.toString() <= 300.toString()) {
                     editor.putInt("TapBpm", bpm.editableText.toString().toInt()).apply()
                 }
@@ -352,7 +353,7 @@ class MainActivity : AppCompatActivity() {
 
         val fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         fab.setOnClickListener {
-            if (PresetList.size < 4) {
+            if (PresetList.size < 8) {
                 var cbeatpattern = beatpattern.toMutableList()
                 var current = Preset(bpm.editableText.toString().toInt(), cbeatpattern)
                 addPreset(PresetList, current)
@@ -360,6 +361,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("PRESET", PresetList.toString())
             }
         }
+
 
     }
 
@@ -393,6 +395,14 @@ class MainActivity : AppCompatActivity() {
     fun addPreset(PresetList: MutableList<Preset>, Preset: Preset) {
         PresetList.add(Preset)
     }
+
+    fun setPreset(preset: Preset) {
+        bpm.setText(preset.pbpm.toString())
+//        beatpattern = preset.pbeatpattern
+//        BeatpatternLayout.adapter.notifyItemRangeChanged(0,preset.pbeatpattern.size-1)
+    }
+
+
 
 
     override fun onResume() {

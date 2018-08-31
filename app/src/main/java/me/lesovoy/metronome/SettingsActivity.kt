@@ -161,7 +161,7 @@ class SettingsActivity : AppCompatActivity() {
 
         colorPicker.colors = colorArray
 
-        colorPicker.setSelectedColor(pref.getInt("main_colour", Color.RED))
+        colorPicker.setSelectedColor(pref.getInt("main_colour", 0xff66bb6a.toInt()))
 
         colorPicker.setOnColorChangedListener(OnColorChangedListener { c ->
             Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))
@@ -173,7 +173,7 @@ class SettingsActivity : AppCompatActivity() {
 
         colorPicker1.colors = colorArray
 
-        colorPicker1.setSelectedColor(pref.getInt("off_colour", Color.BLUE))
+        colorPicker1.setSelectedColor(pref.getInt("off_colour", 0xff9ccc65.toInt()))
 
         colorPicker1.setOnColorChangedListener(OnColorChangedListener { c ->
             Log.d("COLOUR PICKER", "Selected color " + Integer.toHexString(c))

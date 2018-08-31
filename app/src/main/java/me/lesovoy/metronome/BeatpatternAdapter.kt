@@ -31,6 +31,8 @@ class BeatpatternAdapter(val context: Context, val beatPattern: MutableList<Int>
     inner class BeatpatternViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
+        val pref = context.getSharedPreferences("appPref", 0)
+        val editor = pref.edit()
         var pos = 0
 
         init {
@@ -39,12 +41,12 @@ class BeatpatternAdapter(val context: Context, val beatPattern: MutableList<Int>
 //                setPreset(presetList[adapterPosition])
                 when (beatPattern.elementAt(adapterPosition)) {
                     0 -> {
-                        itemView.setBackgroundColor(Color.BLUE)//(pref.getInt("main_colour", Color.RED))
+                        itemView.setBackgroundColor(pref.getInt("off_colour", 0xff9ccc65.toInt()))
                         itemView.BeatText.text = Html.fromHtml("&#x2022;", 0)
                         beatPattern.set(adapterPosition, 1)
                     }
                     1 -> {
-                        itemView.setBackgroundColor(Color.RED)//(pref.getInt("off_colour", Color.BLUE))
+                        itemView.setBackgroundColor(pref.getInt("main_colour", 0xff66bb6a.toInt()))
                         itemView.BeatText.text = "x"
                         beatPattern.set(adapterPosition, 0)
                     }
@@ -63,11 +65,11 @@ class BeatpatternAdapter(val context: Context, val beatPattern: MutableList<Int>
 
             when (beatPattern.elementAt(adapterPosition)) {
                 0 -> {
-                    itemView.setBackgroundColor(Color.RED)//(pref.getInt("main_colour", Color.RED))
+                    itemView.setBackgroundColor(pref.getInt("main_colour", 0xff66bb6a.toInt()))
                     itemView.BeatText.text = "x"
                 }
                 1 -> {
-                    itemView.setBackgroundColor(Color.BLUE)//(pref.getInt("off_colour", Color.BLUE))
+                    itemView.setBackgroundColor(pref.getInt("off_colour", 0xff9ccc65.toInt()))
                     itemView.BeatText.text = Html.fromHtml("&#x2022;", 0)
                 }
             }
