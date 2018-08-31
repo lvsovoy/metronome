@@ -1,6 +1,5 @@
 package me.lesovoy.metronome
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -65,11 +64,6 @@ class PresetAdapter(val context: Context, val presetList: MutableList<Preset>) :
             string = string.substring(1, string.length - 1)
             string = string.replace(",", "")
 
-            val colortick: Int = 0
-
-
-//            string = string.replace("1","<font color =\"#f442aa\">&#x2022;</font>")
-//            string = string.replace("1","<font color =\"#f442aa\">&#x2022;</font>")
 
             string = string.replace("0", "x")
             string = string.replace("1", "&#x2022;")

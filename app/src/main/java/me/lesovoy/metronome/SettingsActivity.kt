@@ -154,7 +154,6 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-
         val colorArray = intArrayOf(0xFFEF5350.toInt(), 0xFFec407a.toInt(), 0xffab47bc.toInt(), 0xff7e57c2.toInt(), 0xff5c6bc0.toInt(), 0xff42a5f5.toInt(), 0xff29b6f6.toInt(), 0xff26c6da.toInt(), 0xff26a69a.toInt(), 0xff66bb6a.toInt(), 0xff9ccc65.toInt(), 0xffd4e157.toInt(), 0xffffee58.toInt(), 0xffffca28.toInt(), 0xffffa726.toInt(), 0xffff7043.toInt(), 0xff8d6e63.toInt(), 0xffbdbdbd.toInt(), 0xff78909c.toInt())
 
         val colorPicker = findViewById<View>(R.id.mainPicker) as LineColorPicker

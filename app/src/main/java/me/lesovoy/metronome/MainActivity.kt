@@ -24,31 +24,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class Preset(var pbpm: Int, var pbeatpattern: MutableList<Int>) {
-
     override fun toString(): String {
         return "[" + this.pbpm + " " + this.pbeatpattern + "]"
     }
-
 }
 
 class MainActivity : AppCompatActivity() {
 
-    var presetBpm: Int = 120
-    var presetBeatpattern: MutableList<Int> = mutableListOf(0, 1, 1, 1)
 
-    //    var preset: Preset
     var beatpattern = mutableListOf(0, 1, 1, 1)
-    // 0 - Tick 1 - Tock
     var totalSteps = beatpattern.size - 1
     var currentStep = 0
     var isPlaying = false
-
     var PresetList: MutableList<Preset> = mutableListOf(Preset(66, mutableListOf(0, 1, 1, 0)), Preset(122, mutableListOf(1, 0, 1, 0)))
-
     val handler = Handler()
 
-
-    //    @SuppressLint("ClickableViewAccessibility", "WrongViewCast", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,9 +48,7 @@ class MainActivity : AppCompatActivity() {
         val pref = applicationContext.getSharedPreferences("appPref", 0)
         val editor = pref.edit()
 
-
         val bpm = findViewById<EditText>(R.id.bpm)
-//        bpm.isFocusable = false
         bpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -69,18 +57,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                playpause.isChecked = false
                 if (bpm.editableText.toString() >= 0.toString() && bpm.editableText.toString() <= 300.toString()) {
                     editor.putInt("TapBpm", bpm.editableText.toString().toInt()).apply()
                 }
             }
         })
-
-//        bpm.setOnLongClickListener {
-//            bpm.isFocusable = !bpm.isFocusable
-//            true
-//        }
-
 
         val vibrator: Vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         var weakVibration: VibrationEffect = VibrationEffect.createOneShot(pref.getInt("weak_vibration", 1).toLong(), VibrationEffect.DEFAULT_AMPLITUDE)
@@ -100,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         val runnable = object : Runnable {
             override fun run() {
-               var i =120
+                var i = 120
                 var maxlength = 500L
 
                 totalSteps = beatpattern.size - 1
@@ -201,80 +182,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-//                    launch {
-//                        val background = findViewById<ConstraintLayout>(R.id.background)
-//                        while (isPlaying) {
-//                            totalSteps = beatpattern.size - 1
-//                            if (currentStep >= 0) {
-//                                if (bpm.editableText.toString() != "") {
-//                                    if (bpm.editableText.toString().toInt() < 301) {
-//                                        var i = bpm.editableText.toString().toInt()
-//                                        var maxlength = 60000L / i.toLong()
-//                                        if (i != 0 && i < 301 && i > 0) {
-//
-//                                            if (System.currentTimeMillis() == (curtime + maxlength)) {
-//                                                when (beatpattern.elementAt(currentStep).toInt()) {
-//                                                    0 -> {
-//                                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-//                                                            sp.play(tick, 1f, 1f, 0, 0, 1f)
-//                                                        }
-//                                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
-//                                                            tg.startTone(3, 10)
-//                                                        }
-//                                                        if (pref.getBoolean("global_vibration", false)) {
-//                                                            vibrator.vibrate(strongVibration)
-//                                                        }
-//
-//                                                        if (currentStep >= totalSteps) {
-//                                                            currentStep = 0
-//                                                        } else {
-//                                                            currentStep++
-//                                                        }
-//                                                        background.setBackgroundColor(Color.rgb(255,0, b))
-//                                                        if(b+100<255){
-//                                                            b+=100} else {b=0}
-//                                                    }
-//                                                    1 -> {
-////                                                    curtime = System.currentTimeMillis()
-//                                                        if (pref.getString("soundPref", "Digital").equals("Realistic")) {
-//                                                            sp.play(tock, 1f, 1f, 0, 0, 1f)
-//                                                        }
-//                                                        if (pref.getString("soundPref", "Digital").equals("Digital")) {
-//                                                            tg.startTone(1, 10)
-//                                                        }
-//                                                        if (pref.getBoolean("global_vibration", false)) {
-//                                                            vibrator.vibrate(weakVibration)
-//                                                        }
-//                                                        if (currentStep >= totalSteps) {
-//                                                            currentStep = 0
-//                                                        } else {
-//                                                            currentStep++
-//                                                        }
-//                                                        background.setBackgroundColor(Color.rgb(0,g,255))
-//                                                        if(g+100<255){
-//                                                        g+=100} else {g=0}
-//                                                    }
-//                                                }
-//
-//                                                curtime = System.currentTimeMillis()
-//                                            }
-//                                        }
-//
-//                                    } else {
-//                                        bpm.setText(300.toString())
-//                                    }
-////                                } else {
-//                                    bpm.setText(1.toString())
-//                                }
-//                            } else {
-//                                sp.play(tick, 0f, 0f, 0, 0, 1f)
-//                                currentStep++
-//                            }
-//                        }
-//                    }
-
-
         //plus/minus buttons
         val plus = findViewById<Button>(R.id.plus)
         plus.setOnLongClickListener {
@@ -305,8 +212,6 @@ class MainActivity : AppCompatActivity() {
         var i = bpm.editableText.toString()
 
         minus.setOnLongClickListener {
-            //                        if (bpm.editableText.toString() != "" && bpm.editableText.toString() > 10.toString() && bpm.editableText.toString() > 9.toString() && bpm.editableText.toString() > 8.toString() && bpm.editableText.toString() > 7.toString() && bpm.editableText.toString() > 6.toString() && bpm.editableText.toString() > 5.toString() && bpm.editableText.toString() > 4.toString() && bpm.editableText.toString() > 3.toString() && bpm.editableText.toString() > 2.toString() && bpm.editableText.toString() > 1.toString() && bpm.editableText.toString() > 0.toString()) {
-
             if (bpm.editableText.toString() != "" && bpm.editableText.toString().toInt() >= 10) {
                 Toast.makeText(this, "-10", Toast.LENGTH_SHORT).show()
                 val i = bpm.editableText.toString().toInt() - 10
@@ -317,6 +222,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
+
         minus.setOnClickListener {
             if (bpm.editableText.toString() != "" && bpm.editableText.toString().toInt() > 0) {
                 var i = bpm.editableText.toString().toInt() - 1
@@ -327,9 +233,6 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-
-//        val bpContainer = findViewById<LinearLayout>(R.id.oldbeatPatternLayout)
-//        drawBP(bpContainer)
 
         val beatpatternLayoutManager = LinearLayoutManager(this)
         beatpatternLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -365,7 +268,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
@@ -398,21 +300,13 @@ class MainActivity : AppCompatActivity() {
 
     fun setPreset(preset: Preset) {
         bpm.setText(preset.pbpm.toString())
-//        beatpattern = preset.pbeatpattern
-//        BeatpatternLayout.adapter.notifyItemRangeChanged(0,preset.pbeatpattern.size-1)
     }
-
-
-
 
     override fun onResume() {
         val pref = applicationContext.getSharedPreferences("appPref", 0)
         val editor = pref.edit()
         val bpm = findViewById<EditText>(R.id.bpm)
         bpm.setText(pref.getInt("TapBpm", 120).toString())
-//        editor.putInt("TapBpm", 120).apply()
-//        recreate()
-
         super.onResume()
     }
 

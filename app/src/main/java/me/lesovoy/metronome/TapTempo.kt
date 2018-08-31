@@ -9,8 +9,6 @@ import kotlinx.android.synthetic.main.tap_tempo.*
 import android.content.Intent
 
 
-
-
 class TapTempo : AppCompatActivity() {
     var prevPress = 0L
 
